@@ -4,8 +4,8 @@
     {
         MainMenu,
         Game,
-        Level,
-        Settings,
-        Exit
+        LevelMenu,
+        SettingsMenu,
+        ExitMenu
     }
 }

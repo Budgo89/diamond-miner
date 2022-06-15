@@ -9,28 +9,30 @@ namespace Controllers
 {
     public class MainController : BaseController
     {
+        private ProfilePlayers _profilePlayer;
         private Transform _placeForUi;
+        private GameLevel _gameLevel;
         private Player _player;
         private Tilemap _tileMap;
-        private ProfilePlayers _profilePlayer;
-
         private DiamondScanner _diamondScanner;
+        private EnemyScanner _enemyScanner;
+        
         private List<GameObject> _emenys;
 
         private DiamondController _diamondController;
-        private EnemyScanner _enemyScanner;
-
         private MainMenuController _mainMenuController;
-
         private PlayerController _playerController;
         private EnemyController _enemyController;
+
         private ExitController _exitController;
+        private LevelMenuController _levelMenuController;
 
 
-        public MainController(ProfilePlayers profilePlayer,Transform placeForUi, Player player, Tilemap tileMap, DiamondScanner diamondScanner, EnemyScanner enemyScanner)
+        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, Tilemap tileMap, DiamondScanner diamondScanner, EnemyScanner enemyScanner)
         {
             _profilePlayer = profilePlayer;
             _placeForUi = placeForUi;
+            _gameLevel = gameLevel;
             _player = player;
             _tileMap = tileMap;
             _diamondScanner = diamondScanner;
@@ -39,17 +41,17 @@ namespace Controllers
             profilePlayer.CurrentState.SubscribeOnChange(OnChangeGameState);
             OnChangeGameState(_profilePlayer.CurrentState.Value);
 
-            _diamondController = new DiamondController(_diamondScanner.GetDiamonds(), _player);
+            //_diamondController = new DiamondController(_diamondScanner.GetDiamonds(), _player);
 
-            _playerController = new PlayerController(_player, _tileMap, _diamondController);
+            //_playerController = new PlayerController(_player, _tileMap, _diamondController);
             
-            _emenys = _enemyScanner.GetEnemy();
-            _enemyController = new EnemyController(_emenys);
+            //_emenys = _enemyScanner.GetEnemy();
+            //_enemyController = new EnemyController(_emenys);
         }
 
         public void Update()
         {
-            _playerController.Update();
+            //_playerController.Update();
         }
         
         protected override void OnDispose()
@@ -66,7 +68,10 @@ namespace Controllers
                 case GameState.MainMenu:
                     _mainMenuController = new MainMenuController(_placeForUi, _profilePlayer);
                     break;
-                case GameState.Exit:
+                case GameState.LevelMenu:
+                    _levelMenuController = new LevelMenuController(_placeForUi, _profilePlayer, _gameLevel);
+                    break;
+                case GameState.ExitMenu:
                     _exitController = new ExitController(_placeForUi, _profilePlayer);
                     break;
             }
@@ -76,6 +81,7 @@ namespace Controllers
         {
             _mainMenuController?.Dispose();
             _exitController?.Dispose();
+            _levelMenuController?.Dispose();
         }
     }
 }

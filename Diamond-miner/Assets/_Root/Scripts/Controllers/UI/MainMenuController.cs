@@ -56,11 +56,11 @@ namespace Controllers.UI
 
         private void OnStartGameButtonClick() => _profilePlayer.CurrentState.Value = GameState.Game;
 
-        private void OnLevelButtonClick() => _profilePlayer.CurrentState.Value = GameState.Level;
+        private void OnLevelButtonClick() => _profilePlayer.CurrentState.Value = GameState.LevelMenu;
 
-        private void OnSettingsButtonClick() => _profilePlayer.CurrentState.Value = GameState.Settings;
+        private void OnSettingsButtonClick() => _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
 
-        private void OnExitButtonClick() => _profilePlayer.CurrentState.Value = GameState.Exit;
+        private void OnExitButtonClick() => _profilePlayer.CurrentState.Value = GameState.ExitMenu;
 
         private void UnsubscribeButton()
         {
