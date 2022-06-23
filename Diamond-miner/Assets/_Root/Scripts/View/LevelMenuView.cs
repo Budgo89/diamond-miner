@@ -7,14 +7,16 @@ namespace View
 {
     public class LevelMenuView : MonoBehaviour
     {
-        [SerializeField] private List<Button> _levelButtons;
-        [SerializeField] private List<TMP_Text> _levelButtonTexts;
-        [SerializeField] private Button _backButton;
         [SerializeField] private Button _nextButton;
+        [SerializeField] private Button _previousButtons;
+        [SerializeField] private TMP_Text _levelText;
+        [SerializeField] private Button _backButton;
+        [SerializeField] private Button _setButton;
 
-        public List<Button> LevelButtons => _levelButtons;
-        public List<TMP_Text> LevelButtonTexts => _levelButtonTexts;
+        public TMP_Text LevelText => _levelText;
         public Button BackButton => _backButton;
         public Button NextButton => _nextButton;
+        public Button PrevButton => _previousButtons;
+        public Button SetButton => _setButton;
     }
 }

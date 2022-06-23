@@ -1787,7 +1787,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1016434341
 Transform:
   m_ObjectHideFlags: 0
@@ -2303,7 +2303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &2056541582
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2442,6 +2442,7 @@ GameObject:
   - component: {fileID: 2057441681}
   - component: {fileID: 2057441683}
   - component: {fileID: 2057441684}
+  - component: {fileID: 2057441685}
   m_Layer: 0
   m_Name: EntryPoint
   m_TagString: Untagged
@@ -2462,9 +2463,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _placeForUi: {fileID: 933159744}
-  _tileMap: {fileID: 728230820}
   _diamondScanner: {fileID: 2057441683}
   _enemyScanner: {fileID: 2057441684}
+  _tileMapScanner: {fileID: 2057441685}
 --- !u!4 &2057441682
 Transform:
   m_ObjectHideFlags: 0
@@ -2502,6 +2503,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afcab28f67a0893439741bb04c63a354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2057441685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057441680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76207979ee00e39408a1e6598dcfb338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1956206411360379992

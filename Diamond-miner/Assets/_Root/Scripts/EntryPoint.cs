@@ -12,9 +12,10 @@ internal class EntryPoint : MonoBehaviour
 
     [Header("Scene Objects")]
     [SerializeField] private Transform _placeForUi;
-    [SerializeField] private Tilemap _tileMap;
     [SerializeField] private DiamondScanner _diamondScanner;
     [SerializeField] private EnemyScanner _enemyScanner;
+    [SerializeField] private TileMapScanner _tileMapScanner;
+
     private Player _player;
 
     private ProfilePlayers _profilePlayer;
@@ -28,12 +29,13 @@ internal class EntryPoint : MonoBehaviour
         GetPlayer();
         _profilePlayer = new ProfilePlayers(GameState.MainMenu);
         _gameLevel = new LevelHandler().GetGameLevel();
-        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _tileMap, _diamondScanner, _enemyScanner);
+        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _diamondScanner, _enemyScanner, _tileMapScanner);
     }
 
     private void GetPlayer()
     {
         _player = (FindObjectsOfType(typeof(Player)) as Player[]).FirstOrDefault();
+        _player.gameObject.SetActive(false);
     }
 
     private void OnDestroy()

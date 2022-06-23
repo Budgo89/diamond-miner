@@ -6,6 +6,8 @@
         Game,
         LevelMenu,
         SettingsMenu,
-        ExitMenu
+        ExitMenu,
+        LanguageMenu,
+        VolumeMenu
     }
 }
