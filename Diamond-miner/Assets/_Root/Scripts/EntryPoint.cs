@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Controllers;
 using MB;
 using Profile;
 using Tool.Levels;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 internal class EntryPoint : MonoBehaviour
 {
@@ -15,6 +13,9 @@ internal class EntryPoint : MonoBehaviour
     [SerializeField] private DiamondScanner _diamondScanner;
     [SerializeField] private EnemyScanner _enemyScanner;
     [SerializeField] private TileMapScanner _tileMapScanner;
+
+    [Header("Level Manager")]
+    [SerializeField] private LevelManager _levelManager;
 
     private Player _player;
 
@@ -29,7 +30,7 @@ internal class EntryPoint : MonoBehaviour
         GetPlayer();
         _profilePlayer = new ProfilePlayers(GameState.MainMenu);
         _gameLevel = new LevelHandler().GetGameLevel();
-        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _diamondScanner, _enemyScanner, _tileMapScanner);
+        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _diamondScanner, _enemyScanner, _tileMapScanner, _levelManager);
     }
 
     private void GetPlayer()
@@ -45,6 +46,7 @@ internal class EntryPoint : MonoBehaviour
 
     public void Update()
     {
-        _mainController.Update();
+        var deltaTime = Time.deltaTime;
+        _mainController.Update(deltaTime);
     }
 }

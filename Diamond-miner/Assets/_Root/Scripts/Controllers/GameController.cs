@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using Controllers.UI;
 using MB;
 using Profile;
-using Tool;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,25 +9,25 @@ namespace Controllers
 {
     internal class GameController : BaseController
     {
-        private readonly ResourcePath _resourcePath = new ResourcePath("");
-
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
         private Player _player;
         private DiamondScanner _diamondScanner;
         private EnemyScanner _enemyScanner;
         private TileMapScanner _tileMapScanner;
+        private LevelManager _levelManager;
+        private GameLevel _gameLevel;
 
         private DiamondController _diamondController;
         private PlayerController _playerController;
         private EnemyController _enemyController;
+        private GameUIController _gameUiController;
 
         private List<GameObject> _emenys;
 
-
         private Tilemap _tileMap;
 
-        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner)
+        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
@@ -36,22 +35,47 @@ namespace Controllers
             _diamondScanner = diamondScanner;
             _enemyScanner = enemyScanner;
             _tileMapScanner = tileMapScanner;
-            _tileMap = _tileMapScanner.GetTileMap();
-            _player.gameObject.SetActive(true);
-            _diamondController = new DiamondController(_diamondScanner.GetDiamonds(), _player);
-
-
-
-            _playerController = new PlayerController(_player, _tileMap, _diamondController);
+            _levelManager = levelManager;
+            _gameLevel = gameLevel;
+            
+            LoadLevel();
 
             _emenys = _enemyScanner.GetEnemy();
-            _enemyController = new EnemyController(_emenys);
-            
+
+            CreateControllers();
+
         }
 
-        public void Update()
+        private void CreateControllers()
+        {
+            _diamondController = new DiamondController(_diamondScanner.GetDiamonds(), _player);
+            _playerController = new PlayerController(_player, _tileMap, _diamondController);
+            _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _diamondScanner, _diamondController);
+            _enemyController = new EnemyController(_emenys);
+        }
+
+        private void LoadLevel()
+        {
+            var prefab = _levelManager.Levels[_gameLevel.CurrentLevel];
+            GameObject objectView = Object.Instantiate(prefab);
+            _tileMap = _tileMapScanner.GetTileMap();
+            _player.gameObject.SetActive(true);
+            _player.gameObject.transform.position = new Vector3(-7.5f, 3.5f, 0f);
+        }
+
+        public void Update(float deltaTime)
         {
             _playerController.Update();
+            _gameUiController.Update(deltaTime);
+        }
+
+        protected override void OnDispose()
+        {
+            _player.gameObject.SetActive(false);
+            _diamondController?.Dispose();
+            _playerController?.Dispose();
+            _enemyController?.Dispose();
+            _gameUiController?.Dispose();
         }
     }
 }

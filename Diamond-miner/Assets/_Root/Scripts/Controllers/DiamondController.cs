@@ -5,10 +5,12 @@ using UnityEngine;
 
 namespace Controllers
 {
-    internal class DiamondController : BaseController
+    public class DiamondController : BaseController
     {
         private List<GameObject> _diamonds;
         private Player _player;
+
+        public Action DiamondRaised;
 
         public DiamondController(List<GameObject> gameObjects, Player player)
         {
@@ -26,6 +28,7 @@ namespace Controllers
             {
                 _diamonds.Remove(diamond.gameObject);
                 diamond.gameObject.SetActive(false);
+                DiamondRaised.Invoke();
             }
         }
     }

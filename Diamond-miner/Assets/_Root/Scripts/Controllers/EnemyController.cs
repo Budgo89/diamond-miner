@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Controllers
 {
-    internal class EnemyController
+    internal class EnemyController : BaseController
     {
         private List<GameObject> _emenys;
         private float _speed = 5f;
