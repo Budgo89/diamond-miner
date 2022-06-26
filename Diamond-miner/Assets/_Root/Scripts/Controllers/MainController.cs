@@ -1,6 +1,7 @@
 using Controllers.UI;
 using MB;
 using Profile;
+using Tool;
 using UnityEngine;
 
 namespace Controllers
@@ -15,6 +16,7 @@ namespace Controllers
         private EnemyScanner _enemyScanner;
         private TileMapScanner _tileMapScanner;
         private LevelManager _levelManager;
+        private PauseManager _pauseManager;
 
         private MainMenuController _mainMenuController;
         private SettingsMenuController _settingsMenuController;
@@ -26,7 +28,7 @@ namespace Controllers
         private LevelMenuController _levelMenuController;
 
 
-        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner, LevelManager levelManager)
+        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager)
         {
             _profilePlayer = profilePlayer;
             _placeForUi = placeForUi;
@@ -36,6 +38,7 @@ namespace Controllers
             _enemyScanner = enemyScanner;
             _tileMapScanner = tileMapScanner;
             _levelManager = levelManager;
+            _pauseManager = pauseManager;
 
             profilePlayer.CurrentState.SubscribeOnChange(OnChangeGameState);
             OnChangeGameState(_profilePlayer.CurrentState.Value);
@@ -58,7 +61,7 @@ namespace Controllers
             switch (state)
             {
                 case GameState.Game:
-                    _gameController = new GameController(_placeForUi, _profilePlayer, _player, _diamondScanner, _enemyScanner, _tileMapScanner, _levelManager, _gameLevel);
+                    _gameController = new GameController(_placeForUi, _profilePlayer, _player, _diamondScanner, _enemyScanner, _tileMapScanner, _levelManager, _gameLevel, _pauseManager);
                     break;
                 case GameState.MainMenu:
                     _mainMenuController = new MainMenuController(_placeForUi, _profilePlayer);

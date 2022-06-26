@@ -2,6 +2,7 @@
 using Controllers;
 using MB;
 using Profile;
+using Tool;
 using Tool.Levels;
 using UnityEngine;
 
@@ -25,12 +26,15 @@ internal class EntryPoint : MonoBehaviour
 
     private GameLevel _gameLevel;
 
+    private PauseManager _pauseManager;
+
     private void Awake()
     {
         GetPlayer();
         _profilePlayer = new ProfilePlayers(GameState.MainMenu);
         _gameLevel = new LevelHandler().GetGameLevel();
-        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _diamondScanner, _enemyScanner, _tileMapScanner, _levelManager);
+        _pauseManager = new PauseManager();
+        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _diamondScanner, _enemyScanner, _tileMapScanner, _levelManager, _pauseManager);
     }
 
     private void GetPlayer()
@@ -46,6 +50,10 @@ internal class EntryPoint : MonoBehaviour
 
     public void Update()
     {
+        if (_pauseManager.IsPause())
+        {
+            return;
+        }
         var deltaTime = Time.deltaTime;
         _mainController.Update(deltaTime);
     }

@@ -2,6 +2,7 @@
 using Controllers.UI;
 using MB;
 using Profile;
+using Tool;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,6 +18,7 @@ namespace Controllers
         private TileMapScanner _tileMapScanner;
         private LevelManager _levelManager;
         private GameLevel _gameLevel;
+        private PauseManager _pauseManager;
 
         private DiamondController _diamondController;
         private PlayerController _playerController;
@@ -27,7 +29,7 @@ namespace Controllers
 
         private Tilemap _tileMap;
 
-        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel)
+        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
@@ -37,6 +39,7 @@ namespace Controllers
             _tileMapScanner = tileMapScanner;
             _levelManager = levelManager;
             _gameLevel = gameLevel;
+            _pauseManager = pauseManager;
             
             LoadLevel();
 
@@ -50,7 +53,7 @@ namespace Controllers
         {
             _diamondController = new DiamondController(_diamondScanner.GetDiamonds(), _player);
             _playerController = new PlayerController(_player, _tileMap, _diamondController);
-            _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _diamondScanner, _diamondController);
+            _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _diamondScanner, _diamondController, _pauseManager);
             _enemyController = new EnemyController(_emenys);
         }
 
