@@ -4,6 +4,7 @@
     {
         public int AvailableLevel = 0;
         public int CurrentLevel = 0;
+        public int IsSameLevel = 0;
 
         public GameLevel()
         {

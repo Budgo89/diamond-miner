@@ -5,6 +5,7 @@ using Profile;
 using Tool;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using View;
 
 namespace Controllers
 {
@@ -29,6 +30,9 @@ namespace Controllers
 
         private Tilemap _tileMap;
 
+        private GameObject _level;
+        private LevelView _levelView;
+
         public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager)
         {
             _placeForUi = placeForUi;
@@ -40,9 +44,9 @@ namespace Controllers
             _levelManager = levelManager;
             _gameLevel = gameLevel;
             _pauseManager = pauseManager;
-            
-            LoadLevel();
 
+            _level = LoadLevel();
+            _levelView = _level.GetComponent<LevelView>();
             _emenys = _enemyScanner.GetEnemy();
 
             CreateControllers();
@@ -53,17 +57,19 @@ namespace Controllers
         {
             _diamondController = new DiamondController(_diamondScanner.GetDiamonds(), _player);
             _playerController = new PlayerController(_player, _tileMap, _diamondController);
-            _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _diamondScanner, _diamondController, _pauseManager);
+            _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _levelView.DiamondCount, _diamondController, _pauseManager);
             _enemyController = new EnemyController(_emenys);
         }
 
-        private void LoadLevel()
+        private GameObject LoadLevel()
         {
             var prefab = _levelManager.Levels[_gameLevel.CurrentLevel];
             GameObject objectView = Object.Instantiate(prefab);
+            Debug.Log("Создали");
             _tileMap = _tileMapScanner.GetTileMap();
             _player.gameObject.SetActive(true);
             _player.gameObject.transform.position = new Vector3(-7.5f, 3.5f, 0f);
+            return objectView;
         }
 
         public void Update(float deltaTime)
@@ -74,11 +80,13 @@ namespace Controllers
 
         protected override void OnDispose()
         {
-            _player.gameObject.SetActive(false);
+            Object.Destroy(_level);
+            Debug.Log("Уничножели");
             _diamondController?.Dispose();
             _playerController?.Dispose();
             _enemyController?.Dispose();
             _gameUiController?.Dispose();
+            _player.gameObject.SetActive(false);
         }
     }
 }

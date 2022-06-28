@@ -14,8 +14,7 @@ namespace Tool
             Pause = true;
             Time.timeScale = 0;
         }
-
-
+        
         /// <summary>
         /// Отключить паузу
         /// </summary>
@@ -24,9 +23,7 @@ namespace Tool
             Pause = false;
             Time.timeScale = 1;
         }
-
-
-
+        
         public bool IsPause()
         {
             return Pause;

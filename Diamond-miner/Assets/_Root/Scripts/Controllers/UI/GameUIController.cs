@@ -17,10 +17,11 @@ namespace Controllers.UI
 
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
-        private DiamondScanner _diamondScanner;
-        private GameUIView _gameUIView;
+        private int _diamondCount;
         private DiamondController _diamondController;
         private PauseManager _pauseManager;
+
+        private GameUIView _gameUIView;
 
         private Button _pauseMenuButton;
         private TMP_Text _diamondСounts;
@@ -29,19 +30,23 @@ namespace Controllers.UI
         private TimeSpan _time;
         private float _seconds;
 
-        public GameUIController(Transform placeForUi, ProfilePlayers profilePlayer, DiamondScanner diamondScanner, DiamondController diamondController, PauseManager pauseManager)
+        private PauseMenuController _pauseMenuController;
+        
+
+        public GameUIController(Transform placeForUi, ProfilePlayers profilePlayer, int diamondCount, DiamondController diamondController, PauseManager pauseManager)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
-            _diamondScanner = diamondScanner;
+            _diamondCount = diamondCount;
             _diamondController = diamondController;
-            _gameUIView = LoadView(placeForUi);
             _pauseManager = pauseManager;
+
+            _gameUIView = LoadView(placeForUi);
 
             AddElementsUi();
             SubscribeButton();
 
-            DiamondСounts();
+            _diamondСounts.text = _diamondCount.ToString();
 
             _diamondController.DiamondRaised += DiamondСounts;
            
@@ -50,11 +55,13 @@ namespace Controllers.UI
         public void Update(float deltaTime)
         {
             DisplayTimer(deltaTime);
+            
         }
 
         private void DiamondСounts()
         {
-            _diamondСounts.text = _diamondScanner.GetDiamonds().Count.ToString();
+            _diamondCount--;
+            _diamondСounts.text = _diamondCount.ToString();
         }
 
         private void SubscribeButton()
@@ -73,6 +80,7 @@ namespace Controllers.UI
         private void OnPauseMenuButtonClick()
         {
             _pauseManager.EnablePause();
+            _pauseMenuController = new PauseMenuController(_placeForUi, _profilePlayer, _pauseManager);
         }
 
         private void UnsubscribeButton()
@@ -97,7 +105,10 @@ namespace Controllers.UI
 
         protected override void OnDispose()
         {
+            _diamondСounts.text = string.Empty;
+            _diamondController.DiamondRaised -= DiamondСounts;
             UnsubscribeButton();
+            _diamondController?.Dispose();
         }
     }
 }
