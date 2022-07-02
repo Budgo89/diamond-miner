@@ -74,8 +74,9 @@ namespace Controllers
 
         public void Update(float deltaTime)
         {
-            _playerController.Update();
-            _gameUiController.Update(deltaTime);
+            _playerController?.Update();
+            _gameUiController?.Update(deltaTime);
+            _gameOverController?.Update(deltaTime);
         }
 
         protected override void OnDispose()

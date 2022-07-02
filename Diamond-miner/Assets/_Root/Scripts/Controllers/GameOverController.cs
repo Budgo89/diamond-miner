@@ -2,6 +2,7 @@
 using MB;
 using Profile;
 using Tool;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Controllers
@@ -15,6 +16,13 @@ namespace Controllers
         private PauseManager _pauseManager;
         private List<GameObject> _enemys;
         private Collider2D _colliderPlayer;
+
+        private bool _isFarther = false;
+        private bool _isGameOver = false;
+
+        private float _gameOverTime = 1;
+        private float _fartherTime = 3;
+        private float _time = 0;
 
         public GameOverController(ProfilePlayers profilePlayer, Player player,int diamondCount, DiamondController diamondController, PauseManager pauseManager, List<GameObject> enemys)
         {
@@ -34,12 +42,44 @@ namespace Controllers
             }
         }
 
+        public void Update(float deltaTime)
+        {
+            if (_isFarther)
+            {
+                _time += deltaTime;
+                if (_time >= _fartherTime)
+                {
+                    FartherMenuStart();
+                    _isFarther = false;
+                }
+            }
+
+            if (_isGameOver)
+            {
+                _time += deltaTime;
+                if (_time >= _gameOverTime)
+                {
+                    GameOverStart();
+                    _isGameOver = false;
+                }
+            }
+        }
+
+        private void GameOverStart()
+        {
+            _profilePlayer.CurrentState.Value = GameState.GameOverMenu;
+        }
+
+        private void FartherMenuStart()
+        {
+            _profilePlayer.CurrentState.Value = GameState.FartherMenu;
+        }
         private void DiamondСheck()
         {
             _diamondCount--;
             if (_diamondCount <= 0)
             {
-                _profilePlayer.CurrentState.Value = GameState.FartherMenu;
+                _isFarther = true;
             }
         }
 
@@ -47,7 +87,7 @@ namespace Controllers
         {
             if (collision == _colliderPlayer)
             {
-                _profilePlayer.CurrentState.Value = GameState.GameOverMenu;
+                _isGameOver = true;
             }
         }
 
