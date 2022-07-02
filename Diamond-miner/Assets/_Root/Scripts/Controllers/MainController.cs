@@ -1,8 +1,10 @@
+using System;
 using Controllers.UI;
 using MB;
 using Profile;
 using Tool;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Controllers
 {
@@ -12,11 +14,10 @@ namespace Controllers
         private Transform _placeForUi;
         private GameLevel _gameLevel;
         private Player _player;
-        private DiamondScanner _diamondScanner;
-        private EnemyScanner _enemyScanner;
         private TileMapScanner _tileMapScanner;
         private LevelManager _levelManager;
         private PauseManager _pauseManager;
+        private AudioMixer _audioMixer;
 
         private MainMenuController _mainMenuController;
         private SettingsMenuController _settingsMenuController;
@@ -26,23 +27,29 @@ namespace Controllers
 
         private ExitController _exitController;
         private LevelMenuController _levelMenuController;
+        private FartherMenuController _fartherMenuController;
+        private GameOverMenuController _gameOverMenuController;
 
 
-        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, DiamondScanner diamondScanner, EnemyScanner enemyScanner, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager)
+        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager, AudioMixer audioMixer)
         {
             _profilePlayer = profilePlayer;
             _placeForUi = placeForUi;
             _gameLevel = gameLevel;
             _player = player;
-            _diamondScanner = diamondScanner;
-            _enemyScanner = enemyScanner;
             _tileMapScanner = tileMapScanner;
             _levelManager = levelManager;
             _pauseManager = pauseManager;
+            _audioMixer = audioMixer;
 
             profilePlayer.CurrentState.SubscribeOnChange(OnChangeGameState);
             OnChangeGameState(_profilePlayer.CurrentState.Value);
-            
+        }
+
+        private void LoadVolumeAudio()
+        {
+            var volume = SaveManagement.GetVolume();
+            _audioMixer.SetFloat("volume", (float)(Math.Log10(volume) * 20));
         }
 
         public void Update(float deltaTime)
@@ -61,7 +68,7 @@ namespace Controllers
             switch (state)
             {
                 case GameState.Game:
-                    _gameController = new GameController(_placeForUi, _profilePlayer, _player, _diamondScanner, _enemyScanner, _tileMapScanner, _levelManager, _gameLevel, _pauseManager);
+                    _gameController = new GameController(_placeForUi, _profilePlayer, _player, _tileMapScanner, _levelManager, _gameLevel, _pauseManager);
                     break;
                 case GameState.MainMenu:
                     _mainMenuController = new MainMenuController(_placeForUi, _profilePlayer);
@@ -76,7 +83,13 @@ namespace Controllers
                     _languageMenuController = new LanguageMenuController(_placeForUi, _profilePlayer);
                     break;
                 case GameState.VolumeMenu:
-                    _volumeMenuController = new VolumeMenuController(_placeForUi, _profilePlayer);
+                    _volumeMenuController = new VolumeMenuController(_placeForUi, _profilePlayer, _audioMixer);
+                    break;
+                case GameState.FartherMenu:
+                    _fartherMenuController = new FartherMenuController(_placeForUi, _profilePlayer, _levelManager, _gameLevel);
+                    break;
+                case GameState.GameOverMenu:
+                    _gameOverMenuController = new GameOverMenuController(_placeForUi, _profilePlayer);
                     break;
                 case GameState.ExitMenu:
                     _exitController = new ExitController(_placeForUi, _profilePlayer);
@@ -86,12 +99,15 @@ namespace Controllers
 
         private void DisposeControllers()
         {
-            _mainMenuController?.Dispose();
+            _gameOverMenuController?.Dispose();
             _exitController?.Dispose();
             _levelMenuController?.Dispose();
             _settingsMenuController?.Dispose();
             _languageMenuController?.Dispose();
             _volumeMenuController?.Dispose();
+            _fartherMenuController?.Dispose();
+            
+            _mainMenuController?.Dispose();
             _gameController?.Dispose();
         }
     }

@@ -2,7 +2,6 @@
 using Profile;
 using TMPro;
 using Tool;
-using Tool.Levels;
 using UnityEngine;
 using UnityEngine.UI;
 using View;
@@ -69,10 +68,7 @@ namespace Controllers.UI
         private void OnSetButtonClick()
         {
             _gameLevel.CurrentLevel = _currentLevel;
-            var levelHandler = new LevelHandler();
-            levelHandler.SetGameLevel(_gameLevel);
-            // исравить на старт!!!
-            _profilePlayer.CurrentState.Value = GameState.MainMenu;
+            _profilePlayer.CurrentState.Value = GameState.Game;
         }
 
         private void OnBackButtonClick() => _profilePlayer.CurrentState.Value = GameState.MainMenu;

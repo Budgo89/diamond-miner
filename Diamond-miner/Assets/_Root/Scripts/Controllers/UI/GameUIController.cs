@@ -105,6 +105,7 @@ namespace Controllers.UI
 
         protected override void OnDispose()
         {
+            _pauseMenuController?.Dispose();
             _diamondСounts.text = string.Empty;
             _diamondController.DiamondRaised -= DiamondСounts;
             UnsubscribeButton();

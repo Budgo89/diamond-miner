@@ -1,19 +1,19 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Controllers;
 using MB;
 using Profile;
 using Tool;
-using Tool.Levels;
 using UnityEngine;
+using UnityEngine.Audio;
 
 internal class EntryPoint : MonoBehaviour
 {
 
     [Header("Scene Objects")]
     [SerializeField] private Transform _placeForUi;
-    [SerializeField] private DiamondScanner _diamondScanner;
-    [SerializeField] private EnemyScanner _enemyScanner;
     [SerializeField] private TileMapScanner _tileMapScanner;
+    [SerializeField] private AudioMixer _audioMixer;
 
     [Header("Level Manager")]
     [SerializeField] private LevelManager _levelManager;
@@ -28,13 +28,24 @@ internal class EntryPoint : MonoBehaviour
 
     private PauseManager _pauseManager;
 
+    private void Start()
+    {
+        LoadVolumeAudio();
+    }
     private void Awake()
     {
         GetPlayer();
         _profilePlayer = new ProfilePlayers(GameState.MainMenu);
-        _gameLevel = new LevelHandler().GetGameLevel();
+        _gameLevel = SaveManagement.GetLevels();
         _pauseManager = new PauseManager();
-        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _diamondScanner, _enemyScanner, _tileMapScanner, _levelManager, _pauseManager);
+        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _tileMapScanner, _levelManager, _pauseManager, _audioMixer);
+    }
+
+    private void LoadVolumeAudio()
+    {
+        var volume = SaveManagement.GetVolume();
+       
+        _audioMixer.SetFloat("volume", (float)(Math.Log10(volume) * 20));
     }
 
     private void GetPlayer()
@@ -46,6 +57,7 @@ internal class EntryPoint : MonoBehaviour
     private void OnDestroy()
     {
         _mainController.Dispose();
+        SaveManagement.SetLevels(_gameLevel);
     }
 
     public void Update()

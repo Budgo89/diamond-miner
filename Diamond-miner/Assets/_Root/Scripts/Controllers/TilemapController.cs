@@ -1,5 +1,6 @@
 ﻿using MB;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 namespace Controllers
@@ -8,11 +9,13 @@ namespace Controllers
     {
         private Player _player;
         private Tilemap _tileMap;
+        private NavMeshSurface2d _navMeshSurface;
 
-        public TilemapController(Player player, Tilemap tileMap)
+        public TilemapController(Player player, Tilemap tileMap, NavMeshSurface2d navMeshSurface)
         {
             _player = player;
             _tileMap = tileMap;
+            _navMeshSurface = navMeshSurface;
         }
 
         public bool IsEdgeMap(int sign, Vector2 vector2)

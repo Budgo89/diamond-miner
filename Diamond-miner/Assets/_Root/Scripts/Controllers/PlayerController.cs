@@ -1,5 +1,6 @@
 ﻿using MB;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 namespace Controllers
@@ -9,6 +10,7 @@ namespace Controllers
         private Player _player;
         private Tilemap _tileMap;
         private DiamondController _diamondController;
+        private NavMeshSurface2d _navMeshSurface;
 
         private float _xAxisInput;
         
@@ -17,14 +19,16 @@ namespace Controllers
 
         private TilemapController _tilemapController;
         private StoneController _stoneController;
-        public PlayerController(Player player, Tilemap tileMap, DiamondController diamondController)
+
+        public PlayerController(Player player, Tilemap tileMap, DiamondController diamondController, NavMeshSurface2d navMeshSurface)
         {
             _player = player;
             _tileMap = tileMap;
             _diamondController = diamondController;
+            _navMeshSurface = navMeshSurface;
 
-            _tilemapController = new TilemapController(_player, tileMap);
-            _stoneController = new StoneController(_player, _tilemapController);
+            _tilemapController = new TilemapController(_player, tileMap, _navMeshSurface);
+            _stoneController = new StoneController(_player, _tilemapController, _navMeshSurface);
         }
 
         public void Update()
@@ -65,6 +69,7 @@ namespace Controllers
                 _player.transform.localScale = (_xAxisInput < 0 ? _leftScale : _rightScale);
                 _tilemapController.RemoveSoil(x, Vector2.right);
                 _diamondController.RaiseDiamond(x, Vector2.right);
+                _navMeshSurface.BuildNavMesh();
             }
 
             if (y != 0)
@@ -78,6 +83,7 @@ namespace Controllers
                     _player.transform.position.y + y, _player.transform.position.z);
                 _tilemapController.RemoveSoil(y, Vector2.up);
                 _diamondController.RaiseDiamond(y, Vector2.up);
+                _navMeshSurface.BuildNavMesh();
             }
 
         }

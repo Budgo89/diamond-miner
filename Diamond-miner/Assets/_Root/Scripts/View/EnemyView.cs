@@ -3,11 +3,14 @@ using UnityEngine;
 
 public class EnemyView : MonoBehaviour
 {
-    public Action<MonoBehaviour> EnemyContact { get; set; }
+    public Action<Collider2D> EnemyContact { get; set; }
 
-    void OnTriggerEnter2D(Collider2D collider)
+    //void OnCollisionEnter(Collider2D collider)
+    //{
+    //    EnemyContact?.Invoke(collider);
+    //}
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        var levelObject = collider.gameObject.GetComponent<EnemyView>();
-        EnemyContact?.Invoke(levelObject);
+        EnemyContact?.Invoke(collision);
     }
 }

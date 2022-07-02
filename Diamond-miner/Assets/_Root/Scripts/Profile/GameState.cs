@@ -8,6 +8,8 @@
         SettingsMenu,
         ExitMenu,
         LanguageMenu,
-        VolumeMenu
+        VolumeMenu,
+        FartherMenu,
+        GameOverMenu
     }
 }

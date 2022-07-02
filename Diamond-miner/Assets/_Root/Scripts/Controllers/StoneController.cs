@@ -1,5 +1,6 @@
 ﻿using MB;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Controllers
 {
@@ -8,10 +9,12 @@ namespace Controllers
         private Player _player;
         private TilemapController _tilemapController;
         private Stone _stone;
-        public StoneController(Player player, TilemapController tilemapController)
+        private NavMeshSurface2d _navMeshSurface;
+        public StoneController(Player player, TilemapController tilemapController, NavMeshSurface2d navMeshSurface)
         {
             _player = player;
             _tilemapController = tilemapController;
+            _navMeshSurface = navMeshSurface;
         }
         /// <summary>
         /// Проверка препятствия
