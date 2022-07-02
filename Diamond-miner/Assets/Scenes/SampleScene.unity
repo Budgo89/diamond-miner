@@ -667,6 +667,7 @@ GameObject:
   - component: {fileID: 2057441681}
   - component: {fileID: 2057441685}
   - component: {fileID: 2057441686}
+  - component: {fileID: 2057441687}
   m_Layer: 0
   m_Name: EntryPoint
   m_TagString: Untagged
@@ -690,6 +691,7 @@ MonoBehaviour:
   _tileMapScanner: {fileID: 2057441685}
   _audioMixer: {fileID: 24100000, guid: a204c8009a4209c4888e792956bf9573, type: 2}
   _audioEffectsManager: {fileID: 11400000, guid: f24ec8a4562aa354b84962507d7fdd4d, type: 2}
+  _swipeDetection: {fileID: 2057441687}
   _levelManager: {fileID: 11400000, guid: f6cb71eced4d1ff4e96e4496365941e4, type: 2}
 --- !u!4 &2057441682
 Transform:
@@ -814,3 +816,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2057441687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057441680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48cba38a07ea87a49ad2f418cc47e886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

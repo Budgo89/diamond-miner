@@ -1,6 +1,7 @@
 ﻿using Profile;
 using Tool;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using View;
 
@@ -66,9 +67,18 @@ namespace Controllers
             _profilePlayer.CurrentState.Value = GameState.Game;
         }
 
-        private void OnMainMenuButtonClick() => _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        private void OnMainMenuButtonClick()
+        {
+            SaveManagement.SetRestart(0);
+            SceneManager.LoadScene(0);
+            //_profilePlayer.CurrentState.Value = GameState.MainMenu;
+        }
 
-        private void OnRestartButtonClick() => _profilePlayer.CurrentState.Value = GameState.Game;
+        private void OnRestartButtonClick()
+        {
+            SaveManagement.SetRestart(1);
+            SceneManager.LoadScene(0);
+        }
 
         private void UnsubscribeButton()
         {

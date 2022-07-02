@@ -46,12 +46,17 @@ namespace Controllers.UI
             _mainMenuButton.onClick.AddListener(OnMainMenuButtonClick);
         }
 
-        private void OnMainMenuButtonClick() => _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        private void OnMainMenuButtonClick()
+        {
+            SaveManagement.SetRestart(0);
+            SceneManager.LoadScene(0);
+        }
 
         private void OnRepeatButtonClick()
         {
             OnToTheGameButtonClick();
-            _profilePlayer.CurrentState.Value = GameState.Game;
+            SaveManagement.SetRestart(1);
+            SceneManager.LoadScene(0);
             //SceneManager.LoadScene("SampleScene");
         }
 

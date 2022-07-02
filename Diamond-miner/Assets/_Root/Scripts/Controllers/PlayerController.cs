@@ -11,6 +11,7 @@ namespace Controllers
         private Tilemap _tileMap;
         private DiamondController _diamondController;
         private NavMeshSurface2d _navMeshSurface;
+        private SwipeDetection _swipeDetection;
 
         private float _xAxisInput;
         
@@ -20,15 +21,30 @@ namespace Controllers
         private TilemapController _tilemapController;
         private StoneController _stoneController;
 
-        public PlayerController(Player player, Tilemap tileMap, DiamondController diamondController, NavMeshSurface2d navMeshSurface)
+        public PlayerController(Player player, Tilemap tileMap, DiamondController diamondController, NavMeshSurface2d navMeshSurface, SwipeDetection swipeDetection)
         {
             _player = player;
             _tileMap = tileMap;
             _diamondController = diamondController;
             _navMeshSurface = navMeshSurface;
+            _swipeDetection = swipeDetection;
+
+            _swipeDetection.SwipeEvevt += OnSwipe;
 
             _tilemapController = new TilemapController(_player, tileMap, _navMeshSurface);
             _stoneController = new StoneController(_player, _tilemapController, _navMeshSurface);
+        }
+
+        private void OnSwipe(Vector2 direction)
+        {
+            if (direction == Vector2.up)
+                Move(0, 1);
+            if (direction == Vector2.down)
+                Move(0, -1);
+            if (direction == Vector2.left)
+                Move(-1, 0);
+            if(direction == Vector2.right)
+                Move(1, 0);
         }
 
         public void Update()

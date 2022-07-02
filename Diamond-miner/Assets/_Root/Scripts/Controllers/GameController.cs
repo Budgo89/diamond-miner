@@ -20,6 +20,7 @@ namespace Controllers
         private GameLevel _gameLevel;
         private PauseManager _pauseManager;
         private AudioEffectsManager _audioEffectsManager;
+        private SwipeDetection _swipeDetection;
 
         private DiamondController _diamondController;
         private PlayerController _playerController;
@@ -35,7 +36,7 @@ namespace Controllers
 
         private NavMeshSurface2d _navMeshSurface;
 
-        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager, AudioEffectsManager audioEffectsManager)
+        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager, AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
@@ -45,6 +46,8 @@ namespace Controllers
             _gameLevel = gameLevel;
             _pauseManager = pauseManager;
             _audioEffectsManager = audioEffectsManager;
+            _swipeDetection = swipeDetection;
+
             _pauseManager.DisablePause();
 
             _level = LoadLevel();
@@ -58,7 +61,7 @@ namespace Controllers
         private void CreateControllers()
         {
             _diamondController = new DiamondController(_levelView.Diamonds, _player, _navMeshSurface);
-            _playerController = new PlayerController(_player, _tileMap, _diamondController, _navMeshSurface);
+            _playerController = new PlayerController(_player, _tileMap, _diamondController, _navMeshSurface, _swipeDetection);
             _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _levelView.DiamondCount, _diamondController, _pauseManager);
             _gameOverController = new GameOverController(_profilePlayer, _player, _levelView.DiamondCount, _diamondController, _pauseManager, _levelView.Enemys, _audioEffectsManager);
         }

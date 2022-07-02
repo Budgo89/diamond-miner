@@ -59,6 +59,21 @@ namespace Tool
         {
             PlayerPrefs.SetFloat("Volume", volume);
         }
-
+        /// <summary>
+        /// Перезагруска уровня
+        /// </summary>
+        /// <param name="x">0 новый запуск, 1 перезапуск</param>
+        public static void SetRestart(int x)
+        {
+            PlayerPrefs.SetInt("Restart", x);
+        }
+        /// <summary>
+        /// 0 новый запуск, 1 перезапуск
+        /// </summary>
+        /// <returns></returns>
+        public static int GetRestart()
+        {
+            return PlayerPrefs.GetInt("Restart");
+        }
     }
 }
