@@ -41,7 +41,7 @@ internal class EntryPoint : MonoBehaviour
             _profilePlayer = new ProfilePlayers(GameState.MainMenu);
         else
             _profilePlayer = new ProfilePlayers(GameState.Game);
-        SaveManagement.SetRestart(1);
+        SaveManagement.SetRestart(0);
         _gameLevel = SaveManagement.GetLevels();
         _pauseManager = new PauseManager();
         _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _tileMapScanner, _levelManager, _pauseManager, _audioMixer, _audioEffectsManager, _swipeDetection);

@@ -1,6 +1,7 @@
 ﻿using Profile;
 using Tool;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using View;
 
@@ -54,6 +55,7 @@ namespace Controllers.UI
 
         private void OnExitButtonClick()
         {
+            SaveManagement.SetRestart(0);
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif

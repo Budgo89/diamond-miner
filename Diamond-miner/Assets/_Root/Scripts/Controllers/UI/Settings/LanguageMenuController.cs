@@ -1,6 +1,7 @@
 ﻿using Profile;
 using Tool;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 using View;
 
@@ -16,6 +17,8 @@ namespace Controllers
         private LanguageMenuView _languageMenuView;
 
         private Button _backButton;
+        private Button _russianButton;
+        private Button _englishButton;
 
         public LanguageMenuController(Transform placeForUi, ProfilePlayers profilePlayer)
         {
@@ -29,17 +32,24 @@ namespace Controllers
         private void AddButtons()
         {
             _backButton = _languageMenuView.BackButton;
+            _russianButton = _languageMenuView.RussianButton;
+            _englishButton = _languageMenuView.EnglishButton;
         }
 
         private void SubscribeButton()
         {
             _backButton.onClick.AddListener(OnBackButtonClick);
+            _englishButton.onClick.AddListener(() => ChangeLanguage(0));
+            _backButton.onClick.AddListener(() => ChangeLanguage(1));
         }
 
+        private void ChangeLanguage(int index) { LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index]; }
         private void OnBackButtonClick() => _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
 
         private void UnsubscribeButton()
         {
+            _backButton.onClick.RemoveAllListeners();
+            _englishButton.onClick.RemoveAllListeners();
             _backButton.onClick.RemoveAllListeners();
         }
 
@@ -47,7 +57,7 @@ namespace Controllers
         {
             UnsubscribeButton();
         }
-
+        
         private LanguageMenuView LoadView(Transform placeForUi)
         {
             GameObject prefab = ResourcesLoader.LoadPrefab(_resourcePath);
