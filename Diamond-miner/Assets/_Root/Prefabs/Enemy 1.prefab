@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4076722405082338144}
   - component: {fileID: 498124928518435886}
   - component: {fileID: 8349128945983059262}
+  - component: {fileID: 8994465428603962302}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -99,7 +100,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -185,3 +186,19 @@ MonoBehaviour:
   _points:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!58 &8994465428603962302
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8212655382300365893}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4

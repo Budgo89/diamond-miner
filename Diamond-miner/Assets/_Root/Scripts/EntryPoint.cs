@@ -14,6 +14,7 @@ internal class EntryPoint : MonoBehaviour
     [SerializeField] private Transform _placeForUi;
     [SerializeField] private TileMapScanner _tileMapScanner;
     [SerializeField] private AudioMixer _audioMixer;
+    [SerializeField] private AudioEffectsManager _audioEffectsManager;
 
     [Header("Level Manager")]
     [SerializeField] private LevelManager _levelManager;
@@ -38,7 +39,7 @@ internal class EntryPoint : MonoBehaviour
         _profilePlayer = new ProfilePlayers(GameState.MainMenu);
         _gameLevel = SaveManagement.GetLevels();
         _pauseManager = new PauseManager();
-        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _tileMapScanner, _levelManager, _pauseManager, _audioMixer);
+        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _player, _tileMapScanner, _levelManager, _pauseManager, _audioMixer, _audioEffectsManager);
     }
 
     private void LoadVolumeAudio()

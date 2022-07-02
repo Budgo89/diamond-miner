@@ -15,6 +15,8 @@ namespace Controllers
         private DiamondController _diamondController;
         private PauseManager _pauseManager;
         private List<GameObject> _enemys;
+        private AudioEffectsManager _audioEffectsManager;
+
         private Collider2D _colliderPlayer;
 
         private bool _isFarther = false;
@@ -24,7 +26,7 @@ namespace Controllers
         private float _fartherTime = 3;
         private float _time = 0;
 
-        public GameOverController(ProfilePlayers profilePlayer, Player player,int diamondCount, DiamondController diamondController, PauseManager pauseManager, List<GameObject> enemys)
+        public GameOverController(ProfilePlayers profilePlayer, Player player,int diamondCount, DiamondController diamondController, PauseManager pauseManager, List<GameObject> enemys, AudioEffectsManager audioEffectsManager)
         {
             _profilePlayer = profilePlayer;
             _player = player;
@@ -32,6 +34,7 @@ namespace Controllers
             _diamondController = diamondController;
             _pauseManager = pauseManager;
             _enemys = enemys;
+            _audioEffectsManager = audioEffectsManager;
 
             _colliderPlayer = _player.GetComponent<Collider2D>();
 
@@ -79,6 +82,8 @@ namespace Controllers
             _diamondCount--;
             if (_diamondCount <= 0)
             {
+                _player.AudioSource.clip = _audioEffectsManager.EndClip;
+                _player.AudioSource.Play();
                 _isFarther = true;
             }
         }
@@ -87,6 +92,8 @@ namespace Controllers
         {
             if (collision == _colliderPlayer)
             {
+                _player.AudioSource.clip = _audioEffectsManager.GameOverClip;
+                _player.AudioSource.Play();
                 _isGameOver = true;
             }
         }

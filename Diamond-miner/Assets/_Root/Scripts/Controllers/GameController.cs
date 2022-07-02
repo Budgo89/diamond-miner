@@ -19,6 +19,7 @@ namespace Controllers
         private LevelManager _levelManager;
         private GameLevel _gameLevel;
         private PauseManager _pauseManager;
+        private AudioEffectsManager _audioEffectsManager;
 
         private DiamondController _diamondController;
         private PlayerController _playerController;
@@ -34,7 +35,7 @@ namespace Controllers
 
         private NavMeshSurface2d _navMeshSurface;
 
-        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager)
+        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager, AudioEffectsManager audioEffectsManager)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
@@ -43,6 +44,7 @@ namespace Controllers
             _levelManager = levelManager;
             _gameLevel = gameLevel;
             _pauseManager = pauseManager;
+            _audioEffectsManager = audioEffectsManager;
             _pauseManager.DisablePause();
 
             _level = LoadLevel();
@@ -58,7 +60,7 @@ namespace Controllers
             _diamondController = new DiamondController(_levelView.Diamonds, _player, _navMeshSurface);
             _playerController = new PlayerController(_player, _tileMap, _diamondController, _navMeshSurface);
             _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _levelView.DiamondCount, _diamondController, _pauseManager);
-            _gameOverController = new GameOverController(_profilePlayer, _player, _levelView.DiamondCount, _diamondController, _pauseManager, _levelView.Enemys);
+            _gameOverController = new GameOverController(_profilePlayer, _player, _levelView.DiamondCount, _diamondController, _pauseManager, _levelView.Enemys, _audioEffectsManager);
         }
 
         private GameObject LoadLevel()

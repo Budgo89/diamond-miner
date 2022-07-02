@@ -14,6 +14,7 @@ namespace MB
         private float _maxDestination = 0.1f;
         private int _point = 0;
         private System.Random _random;
+        private Vector3 _position;
 
         public void Awake()
         {
@@ -26,8 +27,14 @@ namespace MB
 
         public void Update()
         {
-            if (Vector2.Distance(_points[_point].position, _enemyView.gameObject.transform.position) >= _maxDestination)
+            if (Vector2.Distance(_points[_point].position, _enemyView.gameObject.transform.position) >=
+                _maxDestination && _enemyView.gameObject.transform.position != _position)
+            {
                 _navMeshAgent.SetDestination(_points[_point].position);
+                _position = _enemyView.gameObject.transform.position;
+            }
+                
+            
             else
             {
                 if (_points.Count > 2)
@@ -42,6 +49,8 @@ namespace MB
                 {
                     _point = 0;
                 }
+
+                _position = new Vector3(0, 0, 0);
             }
         }
         

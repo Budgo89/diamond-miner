@@ -18,6 +18,7 @@ namespace Controllers
         private LevelManager _levelManager;
         private PauseManager _pauseManager;
         private AudioMixer _audioMixer;
+        private AudioEffectsManager _audioEffectsManager;
 
         private MainMenuController _mainMenuController;
         private SettingsMenuController _settingsMenuController;
@@ -31,7 +32,7 @@ namespace Controllers
         private GameOverMenuController _gameOverMenuController;
 
 
-        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager, AudioMixer audioMixer)
+        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager, AudioMixer audioMixer, AudioEffectsManager audioEffectsManager)
         {
             _profilePlayer = profilePlayer;
             _placeForUi = placeForUi;
@@ -41,15 +42,10 @@ namespace Controllers
             _levelManager = levelManager;
             _pauseManager = pauseManager;
             _audioMixer = audioMixer;
+            _audioEffectsManager = audioEffectsManager;
 
             profilePlayer.CurrentState.SubscribeOnChange(OnChangeGameState);
             OnChangeGameState(_profilePlayer.CurrentState.Value);
-        }
-
-        private void LoadVolumeAudio()
-        {
-            var volume = SaveManagement.GetVolume();
-            _audioMixer.SetFloat("volume", (float)(Math.Log10(volume) * 20));
         }
 
         public void Update(float deltaTime)
@@ -68,7 +64,7 @@ namespace Controllers
             switch (state)
             {
                 case GameState.Game:
-                    _gameController = new GameController(_placeForUi, _profilePlayer, _player, _tileMapScanner, _levelManager, _gameLevel, _pauseManager);
+                    _gameController = new GameController(_placeForUi, _profilePlayer, _player, _tileMapScanner, _levelManager, _gameLevel, _pauseManager, _audioEffectsManager);
                     break;
                 case GameState.MainMenu:
                     _mainMenuController = new MainMenuController(_placeForUi, _profilePlayer);
