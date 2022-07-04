@@ -97,9 +97,9 @@ namespace Controllers
 
         private void DisposeControllers()
         {
+            _levelMenuController?.Dispose();
             _gameOverMenuController?.Dispose();
             _exitController?.Dispose();
-            _levelMenuController?.Dispose();
             _settingsMenuController?.Dispose();
             _languageMenuController?.Dispose();
             _volumeMenuController?.Dispose();

@@ -41,7 +41,7 @@ namespace Controllers
             _restartButton = _fartherMenuView.RestartButton;
             _mainMenuButton = _fartherMenuView.MainMenuButton;
 
-            if (_levelManager.Levels.Count - 1 == _gameLevel.AvailableLevel)
+            if (_levelManager.Levels.Count - 1 == _gameLevel.CurrentLevel)
             {
                 _continueButton.gameObject.SetActive(false);
             }
@@ -64,7 +64,8 @@ namespace Controllers
             else if (_gameLevel.AvailableLevel > _gameLevel.CurrentLevel)
                 _gameLevel.CurrentLevel++;
 
-            _profilePlayer.CurrentState.Value = GameState.Game;
+            SaveManagement.SetRestart(1);
+            SceneManager.LoadScene(0);
         }
 
         private void OnMainMenuButtonClick()
