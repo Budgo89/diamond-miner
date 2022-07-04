@@ -12,7 +12,6 @@ namespace Controllers.UI
         private readonly ResourcePath _resourcePath = new ResourcePath("UI/PauseMenu");
 
         private Transform _placeForUi;
-        private ProfilePlayers _profilePlayer;
         private PauseManager _pauseManager;
 
         private PauseMenuView _pauseMenuView;
@@ -21,10 +20,9 @@ namespace Controllers.UI
         private Button _repeatButton;
         private Button _mainMenuButton;
 
-        public PauseMenuController(Transform placeForUi, ProfilePlayers profilePlayer, PauseManager pauseManager)
+        public PauseMenuController(Transform placeForUi, PauseManager pauseManager)
         {
             _placeForUi = placeForUi;
-            _profilePlayer = profilePlayer;
             _pauseManager = pauseManager;
 
             _pauseMenuView = LoadView(placeForUi);
@@ -48,15 +46,16 @@ namespace Controllers.UI
 
         private void OnMainMenuButtonClick()
         {
-            SaveManagement.SetRestart(0);
+            //SaveManagement.SetRestart(0);
+            SaveManagement.SetGameState(0);
             SceneManager.LoadScene(0);
         }
 
         private void OnRepeatButtonClick()
         {
-            OnToTheGameButtonClick();
-            SaveManagement.SetRestart(1);
-            SceneManager.LoadScene(0);
+            //OnToTheGameButtonClick();
+            //SaveManagement.SetRestart(1);
+            SceneManager.LoadScene(1);
             //SceneManager.LoadScene("SampleScene");
         }
 

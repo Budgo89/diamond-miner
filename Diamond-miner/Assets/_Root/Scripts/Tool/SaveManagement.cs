@@ -75,5 +75,15 @@ namespace Tool
         {
             return PlayerPrefs.GetInt("Restart");
         }
+
+        public static void SetGameState(int gameState)
+        {
+            PlayerPrefs.SetInt("GameState", gameState);
+        }
+
+        public static int GetGameState()
+        {
+            return PlayerPrefs.GetInt("GameState");
+        }
     }
 }

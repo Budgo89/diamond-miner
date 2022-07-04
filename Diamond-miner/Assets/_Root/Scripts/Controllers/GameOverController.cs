@@ -4,12 +4,12 @@ using Profile;
 using Tool;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Controllers
 {
     internal class GameOverController : BaseController
     {
-        private ProfilePlayers _profilePlayer;
         private Player _player;
         private int _diamondCount;
         private DiamondController _diamondController;
@@ -26,9 +26,8 @@ namespace Controllers
         private float _fartherTime = 3;
         private float _time = 0;
 
-        public GameOverController(ProfilePlayers profilePlayer, Player player,int diamondCount, DiamondController diamondController, PauseManager pauseManager, List<GameObject> enemys, AudioEffectsManager audioEffectsManager)
+        public GameOverController(Player player,int diamondCount, DiamondController diamondController, PauseManager pauseManager, List<GameObject> enemys, AudioEffectsManager audioEffectsManager)
         {
-            _profilePlayer = profilePlayer;
             _player = player;
             _diamondCount = diamondCount;
             _diamondController = diamondController;
@@ -70,12 +69,16 @@ namespace Controllers
 
         private void GameOverStart()
         {
-            _profilePlayer.CurrentState.Value = GameState.GameOverMenu;
+            SaveManagement.SetGameState(8);
+            SceneManager.LoadScene(0);
+            //_profilePlayer.CurrentState.Value = GameState.GameOverMenu;
         }
 
         private void FartherMenuStart()
         {
-            _profilePlayer.CurrentState.Value = GameState.FartherMenu;
+            SaveManagement.SetGameState(7);
+            SceneManager.LoadScene(0);
+            //_profilePlayer.CurrentState.Value = GameState.FartherMenu;
         }
         private void DiamondСheck()
         {

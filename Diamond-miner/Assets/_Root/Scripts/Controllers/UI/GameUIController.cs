@@ -1,9 +1,6 @@
 ﻿using System;
-using MB;
-using Profile;
 using TMPro;
 using Tool;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using View;
@@ -16,7 +13,6 @@ namespace Controllers.UI
         private readonly ResourcePath _resourcePath = new ResourcePath("UI/GameUI");
 
         private Transform _placeForUi;
-        private ProfilePlayers _profilePlayer;
         private int _diamondCount;
         private DiamondController _diamondController;
         private PauseManager _pauseManager;
@@ -33,10 +29,9 @@ namespace Controllers.UI
         private PauseMenuController _pauseMenuController;
         
 
-        public GameUIController(Transform placeForUi, ProfilePlayers profilePlayer, int diamondCount, DiamondController diamondController, PauseManager pauseManager)
+        public GameUIController(Transform placeForUi, int diamondCount, DiamondController diamondController, PauseManager pauseManager)
         {
             _placeForUi = placeForUi;
-            _profilePlayer = profilePlayer;
             _diamondCount = diamondCount;
             _diamondController = diamondController;
             _pauseManager = pauseManager;
@@ -80,7 +75,7 @@ namespace Controllers.UI
         private void OnPauseMenuButtonClick()
         {
             _pauseManager.EnablePause();
-            _pauseMenuController = new PauseMenuController(_placeForUi, _profilePlayer, _pauseManager);
+            _pauseMenuController = new PauseMenuController(_placeForUi, _pauseManager);
         }
 
         private void UnsubscribeButton()

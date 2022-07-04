@@ -42,15 +42,15 @@ namespace Controllers
 
         private void OnMainMenuButtonClick()
         {
-            SaveManagement.SetRestart(0);
-            SceneManager.LoadScene(0);
-            //_profilePlayer.CurrentState.Value = GameState.MainMenu;
+            //SaveManagement.SetRestart(0);
+            //SceneManager.LoadScene(0);
+            _profilePlayer.CurrentState.Value = GameState.MainMenu;
         }
 
         private void OnRestartButtonClick()
         {
-            SaveManagement.SetRestart(1);
-            SceneManager.LoadScene(0);
+            //SaveManagement.SetRestart(1);
+            SceneManager.LoadScene(1);
         }
 
         private void UnsubscribeButton()
