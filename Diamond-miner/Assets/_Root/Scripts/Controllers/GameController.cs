@@ -12,8 +12,9 @@ namespace Controllers
 {
     internal class GameController : BaseController
     {
+        private readonly ResourcePath _resourcePath = new ResourcePath("Prefabs/Player");
+
         private Transform _placeForUi;
-        private ProfilePlayers _profilePlayer;
         private Player _player;
         private TileMapScanner _tileMapScanner;
         private LevelManager _levelManager;
@@ -36,11 +37,10 @@ namespace Controllers
 
         private NavMeshSurface2d _navMeshSurface;
 
-        public GameController(Transform placeForUi, ProfilePlayers profilePlayer, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager, AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection)
+        public GameController(Transform placeForUi, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager, AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection)
         {
             _placeForUi = placeForUi;
-            _profilePlayer = profilePlayer;
-            _player = player;
+            _player = LoadPlayer();
             _tileMapScanner = tileMapScanner;
             _levelManager = levelManager;
             _gameLevel = gameLevel;
@@ -62,8 +62,16 @@ namespace Controllers
         {
             _diamondController = new DiamondController(_levelView.Diamonds, _player, _navMeshSurface);
             _playerController = new PlayerController(_player, _tileMap, _diamondController, _navMeshSurface, _swipeDetection);
-            _gameUiController = new GameUIController(_placeForUi, _profilePlayer, _levelView.DiamondCount, _diamondController, _pauseManager);
-            _gameOverController = new GameOverController(_profilePlayer, _player, _levelView.DiamondCount, _diamondController, _pauseManager, _levelView.Enemys, _audioEffectsManager);
+            _gameUiController = new GameUIController(_placeForUi, _levelView.DiamondCount, _diamondController, _pauseManager);
+            _gameOverController = new GameOverController(_player, _levelView.DiamondCount, _diamondController, _pauseManager, _levelView.Enemys, _audioEffectsManager);
+        }
+
+        private Player LoadPlayer()
+        {
+            var prefab = ResourcesLoader.LoadPrefab(_resourcePath);
+            GameObject objectView = Object.Instantiate(prefab);
+            objectView.gameObject.transform.position = new Vector3(-7.5f, 3.5f, 0f);
+            return objectView.GetComponent<Player>();
         }
 
         private GameObject LoadLevel()
@@ -72,8 +80,6 @@ namespace Controllers
             GameObject objectView = Object.Instantiate(prefab);
             Debug.Log("Создали");
             _tileMap = _tileMapScanner.GetTileMap();
-            _player.gameObject.SetActive(true);
-            _player.gameObject.transform.position = new Vector3(-7.5f, 3.5f, 0f);
             return objectView;
         }
 

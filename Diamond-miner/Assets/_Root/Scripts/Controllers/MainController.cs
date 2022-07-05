@@ -5,6 +5,7 @@ using Profile;
 using Tool;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 namespace Controllers
 {
@@ -13,7 +14,6 @@ namespace Controllers
         private ProfilePlayers _profilePlayer;
         private Transform _placeForUi;
         private GameLevel _gameLevel;
-        private Player _player;
         private TileMapScanner _tileMapScanner;
         private LevelManager _levelManager;
         private PauseManager _pauseManager;
@@ -31,14 +31,13 @@ namespace Controllers
         private LevelMenuController _levelMenuController;
         private FartherMenuController _fartherMenuController;
         private GameOverMenuController _gameOverMenuController;
+        
 
-
-        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, Player player, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager, AudioMixer audioMixer, AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection)
+        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager, AudioMixer audioMixer, AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection)
         {
             _profilePlayer = profilePlayer;
             _placeForUi = placeForUi;
             _gameLevel = gameLevel;
-            _player = player;
             _tileMapScanner = tileMapScanner;
             _levelManager = levelManager;
             _pauseManager = pauseManager;
@@ -66,7 +65,7 @@ namespace Controllers
             switch (state)
             {
                 case GameState.Game:
-                    _gameController = new GameController(_placeForUi, _profilePlayer, _player, _tileMapScanner, _levelManager, _gameLevel, _pauseManager, _audioEffectsManager, _swipeDetection);
+                    SceneManager.LoadScene(1);
                     break;
                 case GameState.MainMenu:
                     _mainMenuController = new MainMenuController(_placeForUi, _profilePlayer);
