@@ -9,6 +9,7 @@
 /Diamond-miner/[Bb]uilds/
 /Diamond-miner/[Ll]ogs/
 /Diamond-miner/[Mm]emoryCaptures/
+/iOS/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
