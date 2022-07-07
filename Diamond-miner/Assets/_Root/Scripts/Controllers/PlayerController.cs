@@ -7,14 +7,14 @@ namespace Controllers
 {
     internal class PlayerController : BaseController
     {
+        [SerializeField] private float _xAxisInput = 0.25f;
+
         private Player _player;
         private Tilemap _tileMap;
         private DiamondController _diamondController;
         private NavMeshSurface2d _navMeshSurface;
         private SwipeDetection _swipeDetection;
 
-        private float _xAxisInput;
-        
         private Vector3 _leftScale = new Vector3(-1, 1, 1);
         private Vector3 _rightScale = new Vector3(1, 1, 1);
 
@@ -31,7 +31,7 @@ namespace Controllers
 
             _swipeDetection.SwipeEvevt += OnSwipe;
 
-            _tilemapController = new TilemapController(_player, tileMap, _navMeshSurface);
+            _tilemapController = new TilemapController(_player, _tileMap, _navMeshSurface);
             _stoneController = new StoneController(_player, _tilemapController, _navMeshSurface);
         }
 
@@ -42,9 +42,9 @@ namespace Controllers
             if (direction == Vector2.down)
                 Move(0, -1);
             if (direction == Vector2.left)
-                Move(-1, 0);
+                Move(-1, 0, -1);
             if(direction == Vector2.right)
-                Move(1, 0);
+                Move(1, 0, 1);
         }
 
         public void Update()
@@ -70,7 +70,7 @@ namespace Controllers
             }
         }
 
-        private void Move(int x, int y)
+        private void Move(int x, int y, float xAxisInput = 0)
         {
             if (x != 0)
             {
@@ -79,7 +79,8 @@ namespace Controllers
                     return;
                 if (_stoneController.IsObstacle(Vector2.right, x, y))
                     return;
-                _xAxisInput = Input.GetAxis("Horizontal");
+                _xAxisInput = xAxisInput == 0 ? Input.GetAxis("Horizontal") : xAxisInput;
+                //_xAxisInput = Input.GetAxis("Horizontal");
                 _player.transform.position = new Vector3(_player.transform.position.x + x,
                     _player.transform.position.y, _player.transform.position.z);
                 _player.transform.localScale = (_xAxisInput < 0 ? _leftScale : _rightScale);
