@@ -5,6 +5,7 @@ namespace MB
 {
     public class SwipeDetection : MonoBehaviour
     {
+        [SerializeField] private float _speedPlayer = 0.25f;
         public event OnSwipeInput SwipeEvevt;
         public delegate void OnSwipeInput(Vector2 direction);
 
@@ -15,7 +16,6 @@ namespace MB
 
         private bool isSwiping;
         private bool isMobile;
-        private float _timeConst = 0.5f;
         private float _time;
 
         void Start()
@@ -72,7 +72,7 @@ namespace MB
                     _swipeDelta = Input.GetTouch(0).position - _tapPosition;
             }
 
-            if (_time >= _timeConst)
+            if (_time >= _speedPlayer)
             {
                 if (_swipeDelta.magnitude > _deadZone)
                 {

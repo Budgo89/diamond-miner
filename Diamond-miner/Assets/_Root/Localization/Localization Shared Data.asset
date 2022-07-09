@@ -55,6 +55,26 @@ MonoBehaviour:
     m_Key: Language
     m_Metadata:
       m_Items: []
+  - m_Id: 920240564637696
+    m_Key: IntroText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920396387225600
+    m_Key: MoveText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920635521273856
+    m_Key: EarthText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920745919549440
+    m_Key: ObstaclesText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920792304357376
+    m_Key: EnemyText
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

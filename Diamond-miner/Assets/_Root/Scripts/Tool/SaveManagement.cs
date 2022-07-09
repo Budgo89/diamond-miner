@@ -85,5 +85,20 @@ namespace Tool
         {
             return PlayerPrefs.GetInt("GameState");
         }
+
+        /// <summary>
+        /// Перезагруска уровня
+        /// </summary>
+        /// <param name="x">0 обучение не пройдено, 1 обучение пройдено</param>
+        public static void SetTraining(int x)
+        {
+            PlayerPrefs.SetInt("Training", x);
+        }
+
+        public static bool IsTraining()
+        {
+            var x = PlayerPrefs.GetInt("Training");
+            return x == 0 ? false : true;
+        }
     }
 }

@@ -7,14 +7,14 @@ namespace Controllers
 {
     internal class PlayerController : BaseController
     {
-        [SerializeField] private float _xAxisInput = 0.25f;
-
         private Player _player;
         private Tilemap _tileMap;
         private DiamondController _diamondController;
         private NavMeshSurface2d _navMeshSurface;
         private SwipeDetection _swipeDetection;
 
+        private float _xAxisInput;
+        
         private Vector3 _leftScale = new Vector3(-1, 1, 1);
         private Vector3 _rightScale = new Vector3(1, 1, 1);
 
@@ -31,7 +31,7 @@ namespace Controllers
 
             _swipeDetection.SwipeEvevt += OnSwipe;
 
-            _tilemapController = new TilemapController(_player, _tileMap, _navMeshSurface);
+            _tilemapController = new TilemapController(_player, tileMap, _navMeshSurface);
             _stoneController = new StoneController(_player, _tilemapController, _navMeshSurface);
         }
 

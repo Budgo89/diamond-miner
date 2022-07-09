@@ -58,6 +58,29 @@ MonoBehaviour:
     m_Localized: Language
     m_Metadata:
       m_Items: []
+  - m_Id: 920240564637696
+    m_Localized: 'You mine diamonds in particularly deep and dangerous caves.
+
+      You
+      need to collect all the diamonds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920396387225600
+    m_Localized: In order to move, swipe the screen in the right direction.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920635521273856
+    m_Localized: You can dig through the ground.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920745919549440
+    m_Localized: You can move or lift one stone.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 920792304357376
+    m_Localized: Beware of cave butterflies, meeting them is deadly.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

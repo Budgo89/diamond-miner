@@ -27,6 +27,7 @@ namespace Controllers
         private PlayerController _playerController;
         private GameUIController _gameUiController;
         private GameOverController _gameOverController;
+        private TrainingMenuController _trainingMenuController;
 
         private List<GameObject> _emenys;
 
@@ -40,7 +41,7 @@ namespace Controllers
         public GameController(Transform placeForUi, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager, AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection)
         {
             _placeForUi = placeForUi;
-            _player = LoadPlayer();
+            
             _tileMapScanner = tileMapScanner;
             _levelManager = levelManager;
             _gameLevel = gameLevel;
@@ -50,12 +51,42 @@ namespace Controllers
 
             _pauseManager.DisablePause();
 
+
+
+            if (!SaveManagement.IsTraining())
+            {
+                if (StartTraining())
+                {
+                    _trainingMenuController = new TrainingMenuController(_placeForUi, _pauseManager);
+                }
+                else
+                {
+                    StartGame();
+                    SaveManagement.SetTraining(0);
+                }
+            }
+            else
+            {
+                StartGame();
+                SaveManagement.SetTraining(0);
+            }
+
+        }
+
+        private void StartGame()
+        {
+            _player = LoadPlayer();
             _level = LoadLevel();
             _levelView = _level.GetComponent<LevelView>();
             _navMeshSurface = _levelView.NavMeshSurface;
             _navMeshSurface.BuildNavMesh();
             CreateControllers();
-
+        }
+        private bool StartTraining()
+        {
+            if (_gameLevel.CurrentLevel == 0)
+                return true;
+            return false;
         }
 
         private void CreateControllers()

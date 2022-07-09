@@ -14,18 +14,13 @@ namespace Controllers
         private ProfilePlayers _profilePlayer;
         private Transform _placeForUi;
         private GameLevel _gameLevel;
-        private TileMapScanner _tileMapScanner;
         private LevelManager _levelManager;
-        private PauseManager _pauseManager;
         private AudioMixer _audioMixer;
-        private AudioEffectsManager _audioEffectsManager;
-        private SwipeDetection _swipeDetection;
 
         private MainMenuController _mainMenuController;
         private SettingsMenuController _settingsMenuController;
         private VolumeMenuController _volumeMenuController;
         private LanguageMenuController _languageMenuController;
-        private GameController _gameController;
 
         private ExitController _exitController;
         private LevelMenuController _levelMenuController;
@@ -33,25 +28,16 @@ namespace Controllers
         private GameOverMenuController _gameOverMenuController;
         
 
-        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, TileMapScanner tileMapScanner, LevelManager levelManager, PauseManager pauseManager, AudioMixer audioMixer, AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection)
+        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, LevelManager levelManager, AudioMixer audioMixer)
         {
             _profilePlayer = profilePlayer;
             _placeForUi = placeForUi;
             _gameLevel = gameLevel;
-            _tileMapScanner = tileMapScanner;
             _levelManager = levelManager;
-            _pauseManager = pauseManager;
             _audioMixer = audioMixer;
-            _audioEffectsManager = audioEffectsManager;
-            _swipeDetection = swipeDetection;
 
             profilePlayer.CurrentState.SubscribeOnChange(OnChangeGameState);
             OnChangeGameState(_profilePlayer.CurrentState.Value);
-        }
-
-        public void Update(float deltaTime)
-        {
-            _gameController?.Update(deltaTime);
         }
         
         protected override void OnDispose()
@@ -103,7 +89,6 @@ namespace Controllers
             _languageMenuController?.Dispose();
             _volumeMenuController?.Dispose();
             _fartherMenuController?.Dispose();
-            _gameController?.Dispose();
             _mainMenuController?.Dispose();
             
         }
