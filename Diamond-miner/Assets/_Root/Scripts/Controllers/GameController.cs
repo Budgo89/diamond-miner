@@ -57,7 +57,7 @@ namespace Controllers
             {
                 if (StartTraining())
                 {
-                    _trainingMenuController = new TrainingMenuController(_placeForUi, _pauseManager);
+                    _trainingMenuController = new TrainingMenuController(_placeForUi, _gameLevel);
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace Controllers
         }
         private bool StartTraining()
         {
-            if (_gameLevel.CurrentLevel == 0)
+            if (_gameLevel.CurrentLevel == 0 || _gameLevel.CurrentLevel == 2)
                 return true;
             return false;
         }
@@ -124,7 +124,7 @@ namespace Controllers
         protected override void OnDispose()
         {
             Object.Destroy(_level);
-            Debug.Log("Уничножели");
+            Debug.Log("Уничтожели");
             _diamondController?.Dispose();
             _playerController?.Dispose();
             _gameUiController?.Dispose();

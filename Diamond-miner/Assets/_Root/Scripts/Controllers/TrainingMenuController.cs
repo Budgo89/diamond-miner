@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Profile;
 using TMPro;
 using Tool;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Controllers
 
         private Transform _placeForUi;
         private TrainingMenuView _trainingMenuView;
-        private PauseManager _pauseManager;
+        private GameLevel _gameLevel;
 
         private Button _nextButton;
 
@@ -23,29 +24,50 @@ namespace Controllers
         private TMP_Text _moveText;
         private TMP_Text _earthText;
         private TMP_Text _obstaclesText;
+
+        private List<TMP_Text> _textEnemyList;
         private TMP_Text _enemyText;
 
         private List<GameObject> _animations;
         private GameObject _diamonds;
-        private GameObject _enemyAnimation;
         private GameObject _moveAnimation;
         private GameObject _earthAnimation;
         private GameObject _obstaclesAnimation;
 
+        private List<GameObject> _animationenemyList;
+        private GameObject _enemyAnimation;
+
         private int _index = 0;
 
-        public TrainingMenuController(Transform placeForUi, PauseManager pauseManager)
+        public TrainingMenuController(Transform placeForUi, GameLevel gameLevel)
         {
             _placeForUi = placeForUi;
-            _pauseManager = pauseManager;
+            _gameLevel = gameLevel;
 
             _trainingMenuView = LoadView(_placeForUi);
 
             _textList = new List<TMP_Text>();
+            _textEnemyList = new List<TMP_Text>();
             _animations = new List<GameObject>();
+            _animationenemyList = new List<GameObject>();
 
             AddElements();
             SubscribeButton();
+            StartTrainings();
+        }
+
+        private void StartTrainings()
+        {
+            if (_gameLevel.CurrentLevel == 0)
+            {
+                _textList[0].gameObject.SetActive(true);
+                _animations[0].gameObject.SetActive(true);
+            }
+            else if (_gameLevel.CurrentLevel == 2)
+            {
+                _textEnemyList[0].gameObject.SetActive(true);
+                _animationenemyList[0].gameObject.SetActive(true);
+            }
         }
 
         private void AddElements()
@@ -61,7 +83,7 @@ namespace Controllers
             _textList.Add(_moveText);
             _textList.Add(_earthText);
             _textList.Add(_obstaclesText);
-            _textList.Add(_enemyText);
+            _textEnemyList.Add(_enemyText);
 
             _diamonds = _trainingMenuView.Diamonds;
             _enemyAnimation = _trainingMenuView.EnemyAnimation;
@@ -72,7 +94,7 @@ namespace Controllers
             _animations.Add(_moveAnimation);
             _animations.Add(_earthAnimation);
             _animations.Add(_obstaclesAnimation);
-            _animations.Add(_enemyAnimation);
+            _animationenemyList.Add(_enemyAnimation);
         }
 
         private void SubscribeButton()
@@ -84,19 +106,40 @@ namespace Controllers
         private void OnNextButtonClick()
         {
             _index++;
-            if (_index >= _animations.Count)
-            {
-                SaveManagement.SetTraining(1);
-                SceneManager.LoadScene(1);
-            }
-            else
-            {
-                _textList[_index - 1].gameObject.SetActive(false);
-                _animations[_index - 1].gameObject.SetActive(false);
 
-                _textList[_index].gameObject.SetActive(true);
-                
-                _animations[_index].gameObject.SetActive(true);
+            if (_gameLevel.CurrentLevel == 0)
+            {
+                if (_index >= _animations.Count)
+                {
+                    SaveManagement.SetTraining(1);
+                    SceneManager.LoadScene(1);
+                }
+                else
+                {
+                    _textList[_index - 1].gameObject.SetActive(false);
+                    _animations[_index - 1].gameObject.SetActive(false);
+
+                    _textList[_index].gameObject.SetActive(true);
+
+                    _animations[_index].gameObject.SetActive(true);
+                }
+            }
+            else if (_gameLevel.CurrentLevel == 2)
+            {
+                if (_index >= _animationenemyList.Count)
+                {
+                    SaveManagement.SetTraining(1);
+                    SceneManager.LoadScene(1);
+                }
+                else
+                {
+                    _textEnemyList[_index - 1].gameObject.SetActive(false);
+                    _animationenemyList[_index - 1].gameObject.SetActive(false);
+
+                    _textEnemyList[_index].gameObject.SetActive(true);
+
+                    _animationenemyList[_index].gameObject.SetActive(true);
+                }
             }
         }
 
