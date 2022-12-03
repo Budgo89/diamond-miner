@@ -24,12 +24,14 @@ namespace Scripts
         private PauseManager _pauseManager;
 
         private GameController _gameController;
+        private AudioSource _audioSourceEffects;
 
         public void Start()
         {
             _gameLevel = SaveManagement.GetLevels();
             _pauseManager = new PauseManager();
-            _gameController = new GameController(_placeForUi, _tileMapScanner, _levelManager, _gameLevel, _pauseManager, _audioEffectsManager, _swipeDetection);
+            _audioSourceEffects = GameObject.FindGameObjectWithTag("AudioEffects").GetComponent<AudioSource>();
+            _gameController = new GameController(_placeForUi, _tileMapScanner, _levelManager, _gameLevel, _pauseManager, _audioEffectsManager, _swipeDetection, _audioSourceEffects);
         }
 
         public void Update()

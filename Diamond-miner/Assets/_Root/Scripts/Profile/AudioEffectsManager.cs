@@ -7,8 +7,10 @@ namespace Profile
     {
         [SerializeField] private AudioClip _gameOverClip;
         [SerializeField] private AudioClip _endClip;
+        [SerializeField] private AudioClip _buttonClick;
 
         public AudioClip GameOverClip => _gameOverClip;
         public AudioClip EndClip => _endClip;
+        public AudioClip ButtonClick => _buttonClick;
     }
 }

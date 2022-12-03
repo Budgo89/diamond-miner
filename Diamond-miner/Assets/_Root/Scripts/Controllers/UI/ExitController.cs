@@ -13,14 +13,18 @@ namespace Controllers.UI
 
         private ExitMenuView _exitMenuView;
         private ProfilePlayers _profilePlayer;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private Button _exitButton;
         private Button _backButton;
 
-        public ExitController(Transform placeForUi, ProfilePlayers profilePlayer)
+        public ExitController(Transform placeForUi, ProfilePlayers profilePlayer, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _exitMenuView = LoadView(placeForUi);
             _profilePlayer = profilePlayer;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
             AddButton();
             SubscribeButton();
         }
@@ -45,7 +49,11 @@ namespace Controllers.UI
             _backButton.onClick.AddListener(OnBackButtonClick);
         }
 
-        private void OnBackButtonClick() => _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        private void OnBackButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        }
 
         private void UnsubscribeButton()
         {
@@ -60,6 +68,11 @@ namespace Controllers.UI
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
             Application.Quit();
+        }
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
 
         protected override void OnDispose()

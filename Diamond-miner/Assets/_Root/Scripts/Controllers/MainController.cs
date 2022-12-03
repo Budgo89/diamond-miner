@@ -16,6 +16,8 @@ namespace Controllers
         private GameLevel _gameLevel;
         private LevelManager _levelManager;
         private AudioMixer _audioMixer;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private MainMenuController _mainMenuController;
         private SettingsMenuController _settingsMenuController;
@@ -28,13 +30,16 @@ namespace Controllers
         private GameOverMenuController _gameOverMenuController;
         
 
-        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, LevelManager levelManager, AudioMixer audioMixer)
+        public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, LevelManager levelManager, AudioMixer audioMixer, 
+            AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _profilePlayer = profilePlayer;
             _placeForUi = placeForUi;
             _gameLevel = gameLevel;
             _levelManager = levelManager;
             _audioMixer = audioMixer;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
 
             profilePlayer.CurrentState.SubscribeOnChange(OnChangeGameState);
             OnChangeGameState(_profilePlayer.CurrentState.Value);
@@ -54,28 +59,28 @@ namespace Controllers
                     SceneManager.LoadScene(1);
                     break;
                 case GameState.MainMenu:
-                    _mainMenuController = new MainMenuController(_placeForUi, _profilePlayer);
+                    _mainMenuController = new MainMenuController(_placeForUi, _profilePlayer, _audioEffectsManager, _audioSource);
                     break;
                 case GameState.LevelMenu:
-                    _levelMenuController = new LevelMenuController(_placeForUi, _profilePlayer, _gameLevel);
+                    _levelMenuController = new LevelMenuController(_placeForUi, _profilePlayer, _gameLevel, _audioEffectsManager, _audioSource);
                     break;
                 case GameState.SettingsMenu:
-                    _settingsMenuController = new SettingsMenuController(_placeForUi, _profilePlayer);
+                    _settingsMenuController = new SettingsMenuController(_placeForUi, _profilePlayer, _audioEffectsManager, _audioSource);
                     break;
                 case GameState.LanguageMenu:
-                    _languageMenuController = new LanguageMenuController(_placeForUi, _profilePlayer);
+                    _languageMenuController = new LanguageMenuController(_placeForUi, _profilePlayer, _audioEffectsManager, _audioSource);
                     break;
                 case GameState.VolumeMenu:
-                    _volumeMenuController = new VolumeMenuController(_placeForUi, _profilePlayer, _audioMixer);
+                    _volumeMenuController = new VolumeMenuController(_placeForUi, _profilePlayer, _audioMixer, _audioEffectsManager, _audioSource);
                     break;
                 case GameState.FartherMenu:
-                    _fartherMenuController = new FartherMenuController(_placeForUi, _profilePlayer, _levelManager, _gameLevel);
+                    _fartherMenuController = new FartherMenuController(_placeForUi, _profilePlayer, _levelManager, _gameLevel, _audioEffectsManager, _audioSource);
                     break;
                 case GameState.GameOverMenu:
-                    _gameOverMenuController = new GameOverMenuController(_placeForUi, _profilePlayer);
+                    _gameOverMenuController = new GameOverMenuController(_placeForUi, _profilePlayer, _audioEffectsManager, _audioSource);
                     break;
                 case GameState.ExitMenu:
-                    _exitController = new ExitController(_placeForUi, _profilePlayer);
+                    _exitController = new ExitController(_placeForUi, _profilePlayer, _audioEffectsManager, _audioSource);
                     break;
             }
         }

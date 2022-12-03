@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameOverClip: {fileID: 8300000, guid: 8a48bdeca83ba7841ba9cdb26699ddd8, type: 3}
   _endClip: {fileID: 8300000, guid: c2ac89d6977585840984547b9e3e176b, type: 3}
+  _buttonClick: {fileID: 8300000, guid: 7dc8f7e8981f6fe4fac205b644bcd2df, type: 3}

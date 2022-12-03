@@ -12,6 +12,8 @@ namespace Controllers.UI
 
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private MainMenuView _mainMenuView;
 
@@ -20,14 +22,17 @@ namespace Controllers.UI
         private Button _settingsButton;
         private Button _exitButton;
 
-        public MainMenuController(Transform placeForUi, ProfilePlayers profilePlayer)
+        public MainMenuController(Transform placeForUi, ProfilePlayers profilePlayer, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
 
             _mainMenuView = LoadView(placeForUi);
             AddButton();
             SubscribeButton();
+            
         }
         private MainMenuView LoadView(Transform placeForUi)
         {
@@ -54,13 +59,29 @@ namespace Controllers.UI
             _exitButton.onClick.AddListener(OnExitButtonClick);
         }
 
-        private void OnStartGameButtonClick() => _profilePlayer.CurrentState.Value = GameState.Game;
+        private void OnStartGameButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.Game;
+        }
 
-        private void OnLevelButtonClick() => _profilePlayer.CurrentState.Value = GameState.LevelMenu;
+        private void OnLevelButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.LevelMenu;
+        }
 
-        private void OnSettingsButtonClick() => _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
+        private void OnSettingsButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
+        }
 
-        private void OnExitButtonClick() => _profilePlayer.CurrentState.Value = GameState.ExitMenu;
+        private void OnExitButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.ExitMenu;
+        }
 
         private void UnsubscribeButton()
         {
@@ -68,6 +89,12 @@ namespace Controllers.UI
             _levelButton.onClick.RemoveAllListeners();
             _settingsButton.onClick.RemoveAllListeners();
             _exitButton.onClick.RemoveAllListeners();
+        }
+
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
         protected override void OnDispose()
         {

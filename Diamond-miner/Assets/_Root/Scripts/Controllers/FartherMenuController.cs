@@ -15,6 +15,8 @@ namespace Controllers
         private ProfilePlayers _profilePlayer;
         private LevelManager _levelManager;
         private GameLevel _gameLevel;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private FartherMenuView _fartherMenuView;
 
@@ -22,12 +24,14 @@ namespace Controllers
         private Button _restartButton;
         private Button _mainMenuButton;
 
-        public FartherMenuController(Transform placeForUi, ProfilePlayers profilePlayer, LevelManager levelManager, GameLevel gameLevel)
+        public FartherMenuController(Transform placeForUi, ProfilePlayers profilePlayer, LevelManager levelManager, GameLevel gameLevel, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
             _levelManager = levelManager;
             _gameLevel = gameLevel;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
 
             _fartherMenuView = LoadView(placeForUi);
             AddButton();
@@ -56,6 +60,7 @@ namespace Controllers
 
         private void OnContinueButtonClick()
         {
+            AudioButtonClick();
             if (_gameLevel.CurrentLevel == _gameLevel.AvailableLevel)
             {
                 _gameLevel.CurrentLevel++;
@@ -69,14 +74,13 @@ namespace Controllers
 
         private void OnMainMenuButtonClick()
         {
-            //SaveManagement.SetRestart(0);
-            //SceneManager.LoadScene(0);
+            AudioButtonClick();
             _profilePlayer.CurrentState.Value = GameState.MainMenu;
         }
 
         private void OnRestartButtonClick()
         {
-            //SaveManagement.SetRestart(1);
+            AudioButtonClick();
             SceneManager.LoadScene(1);
         }
 
@@ -99,6 +103,11 @@ namespace Controllers
             AddGameObject(objectView);
 
             return objectView.GetComponent<FartherMenuView>();
+        }
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
     }
 }

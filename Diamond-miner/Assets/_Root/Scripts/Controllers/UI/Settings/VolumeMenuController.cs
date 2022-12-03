@@ -17,6 +17,8 @@ namespace Controllers
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
         private AudioMixer _audioMixer;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private VolumeMenuView _volumeMenuView;
 
@@ -26,11 +28,13 @@ namespace Controllers
 
         private float _volume;
 
-        public VolumeMenuController(Transform placeForUi, ProfilePlayers profilePlayer, AudioMixer audioMixer)
+        public VolumeMenuController(Transform placeForUi, ProfilePlayers profilePlayer, AudioMixer audioMixer, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
             _audioMixer = audioMixer;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
             _volumeMenuView = LoadView(placeForUi);
             AddButtons();
             _volume = SaveManagement.GetVolume();
@@ -63,15 +67,21 @@ namespace Controllers
 
         private void OnSaveButtonClick()
         {
+            AudioButtonClick();
             SaveManagement.SetVolume(_volume);
             _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
         }
 
-        private void OnBackButtonClick() => _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
+        private void OnBackButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
+        }
 
         private void UnsubscribeButton()
         {
             _backButton.onClick.RemoveAllListeners();
+            _saveButton.onClick.RemoveAllListeners();
         }
 
         protected override void OnDispose()
@@ -86,6 +96,11 @@ namespace Controllers
             AddGameObject(objectView);
 
             return objectView.GetComponent<VolumeMenuView>();
+        }
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
     }
 }

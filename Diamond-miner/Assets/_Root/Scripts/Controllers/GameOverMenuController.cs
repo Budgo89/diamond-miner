@@ -10,18 +10,23 @@ namespace Controllers
     internal class GameOverMenuController : BaseController
     {
         private readonly ResourcePath _resourcePath = new ResourcePath("UI/GameOverMenu");
+
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private GameOverMenuView _gameOverMenuView;
 
         private Button _restartButton;
         private Button _mainMenuButton;
 
-        public GameOverMenuController(Transform placeForUi, ProfilePlayers profilePlayer)
+        public GameOverMenuController(Transform placeForUi, ProfilePlayers profilePlayer, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
 
             _gameOverMenuView = LoadView(placeForUi);
             AddButton();
@@ -42,14 +47,13 @@ namespace Controllers
 
         private void OnMainMenuButtonClick()
         {
-            //SaveManagement.SetRestart(0);
-            //SceneManager.LoadScene(0);
+            AudioButtonClick();
             _profilePlayer.CurrentState.Value = GameState.MainMenu;
         }
 
         private void OnRestartButtonClick()
         {
-            //SaveManagement.SetRestart(1);
+            AudioButtonClick();
             SceneManager.LoadScene(1);
         }
 
@@ -71,6 +75,11 @@ namespace Controllers
             AddGameObject(objectView);
 
             return objectView.GetComponent<GameOverMenuView>();
+        }
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
     }
 }

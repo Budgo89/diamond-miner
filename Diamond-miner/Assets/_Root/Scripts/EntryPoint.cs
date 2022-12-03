@@ -14,15 +14,18 @@ using static System.Int32;
 internal class EntryPoint : MonoBehaviour
 {
 
-    [Header("Scene Objects")] [SerializeField]
-    private Transform _placeForUi;
+    [Header("Scene Objects")] 
+    [SerializeField] private Transform _placeForUi;
 
+    [Header("Audio")]
     [SerializeField] private AudioMixer _audioMixer;
+    [SerializeField] private AudioEffectsManager _audioEffectsManager;
 
     [Header("Level Manager")] [SerializeField]
     private LevelManager _levelManager;
 
-    [Header("PlayFab")] [SerializeField] private string _titleId;
+    [Header("PlayFab")] 
+    [SerializeField] private string _titleId;
     [SerializeField] private string _gameVersion = "dev";
     [SerializeField] private string _authentificationKey = "AUTHENTIFICATION_KEY";
 
@@ -34,9 +37,10 @@ internal class EntryPoint : MonoBehaviour
 
     private bool _isServer = false;
 
-    private static string _myPlayFabId;
+    private string _myPlayFabId;
 
-    private readonly Dictionary<string, int> _progress = new Dictionary<string, int>();
+    private AudioSource _audioSourceEffects;
+
 
     private void Start()
     {
@@ -45,7 +49,8 @@ internal class EntryPoint : MonoBehaviour
         SaveManagement.SetGameState(0);
         SaveManagement.SetRestart(0);
         _gameLevel = SaveManagement.GetLevels();
-        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _levelManager, _audioMixer);
+        _audioSourceEffects = GameObject.FindGameObjectWithTag("AudioEffects").GetComponent<AudioSource>();
+        _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _levelManager, _audioMixer, _audioEffectsManager, _audioSourceEffects);
 
     }
 

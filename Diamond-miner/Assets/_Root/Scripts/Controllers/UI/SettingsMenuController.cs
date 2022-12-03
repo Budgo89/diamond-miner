@@ -12,6 +12,8 @@ namespace Controllers
 
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private Button _volumeButton;
         private Button _languageButton;
@@ -19,10 +21,12 @@ namespace Controllers
 
         private SettingsMenuView _settingsMenuView;
 
-        public SettingsMenuController(Transform placeForUi, ProfilePlayers profilePlayer)
+        public SettingsMenuController(Transform placeForUi, ProfilePlayers profilePlayer, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
             _settingsMenuView = LoadView(placeForUi);
 
             AddButtons();
@@ -48,11 +52,23 @@ namespace Controllers
             UnsubscribeButton();
         }
 
-        private void OnBackButtonClick() => _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        private void OnBackButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        }
 
-        private void OnLanguageButtonClick() => _profilePlayer.CurrentState.Value = GameState.LanguageMenu;
+        private void OnLanguageButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.LanguageMenu;
+        }
 
-        private void OnVolumeButtonClick() => _profilePlayer.CurrentState.Value = GameState.VolumeMenu;
+        private void OnVolumeButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.VolumeMenu;
+        }
 
         private void UnsubscribeButton()
         {
@@ -68,6 +84,11 @@ namespace Controllers
             AddGameObject(objectView);
 
             return objectView.GetComponent<SettingsMenuView>();
+        }
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
     }
 }

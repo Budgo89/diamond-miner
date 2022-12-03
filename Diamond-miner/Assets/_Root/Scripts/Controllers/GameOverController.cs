@@ -71,15 +71,14 @@ namespace Controllers
         {
             SaveManagement.SetGameState(8);
             SceneManager.LoadScene(0);
-            //_profilePlayer.CurrentState.Value = GameState.GameOverMenu;
         }
 
         private void FartherMenuStart()
         {
             SaveManagement.SetGameState(7);
             SceneManager.LoadScene(0);
-            //_profilePlayer.CurrentState.Value = GameState.FartherMenu;
         }
+
         private void DiamondСheck()
         {
             _diamondCount--;

@@ -15,6 +15,8 @@ namespace Controllers.UI
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
         private GameLevel _gameLevel;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private LevelMenuView _levelMenuView;
 
@@ -27,11 +29,13 @@ namespace Controllers.UI
         private Button _setButton;
 
 
-        public LevelMenuController(Transform placeForUi, ProfilePlayers profilePlayer, GameLevel gameLevel)
+        public LevelMenuController(Transform placeForUi, ProfilePlayers profilePlayer, GameLevel gameLevel, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
             _gameLevel = gameLevel;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
 
             _currentLevel = gameLevel.CurrentLevel;
 
@@ -67,14 +71,20 @@ namespace Controllers.UI
 
         private void OnSetButtonClick()
         {
+            AudioButtonClick();
             _gameLevel.CurrentLevel = _currentLevel;
             _profilePlayer.CurrentState.Value = GameState.Game;
         }
 
-        private void OnBackButtonClick() => _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        private void OnBackButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.MainMenu;
+        }
 
         private void OnPreviousButtonClick()
         {
+            AudioButtonClick();
             if (_currentLevel != 0)
             {
                 _currentLevel--;
@@ -84,6 +94,7 @@ namespace Controllers.UI
 
         private void OnNextButtonClick()
         {
+            AudioButtonClick();
             if (_currentLevel != _gameLevel.AvailableLevel)
             {
                 _currentLevel++;
@@ -111,6 +122,11 @@ namespace Controllers.UI
             AddGameObject(objectView);
 
             return objectView.GetComponent<LevelMenuView>();
+        }
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
     }
 }

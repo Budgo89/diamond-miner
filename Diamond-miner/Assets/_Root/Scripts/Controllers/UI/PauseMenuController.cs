@@ -13,6 +13,8 @@ namespace Controllers.UI
 
         private Transform _placeForUi;
         private PauseManager _pauseManager;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private PauseMenuView _pauseMenuView;
 
@@ -20,10 +22,12 @@ namespace Controllers.UI
         private Button _repeatButton;
         private Button _mainMenuButton;
 
-        public PauseMenuController(Transform placeForUi, PauseManager pauseManager)
+        public PauseMenuController(Transform placeForUi, PauseManager pauseManager, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _pauseManager = pauseManager;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
 
             _pauseMenuView = LoadView(placeForUi);
 
@@ -46,21 +50,20 @@ namespace Controllers.UI
 
         private void OnMainMenuButtonClick()
         {
-            //SaveManagement.SetRestart(0);
+            AudioButtonClick();
             SaveManagement.SetGameState(0);
             SceneManager.LoadScene(0);
         }
 
         private void OnRepeatButtonClick()
         {
-            //OnToTheGameButtonClick();
-            //SaveManagement.SetRestart(1);
+            AudioButtonClick();
             SceneManager.LoadScene(1);
-            //SceneManager.LoadScene("SampleScene");
         }
 
         private void OnToTheGameButtonClick()
         {
+            AudioButtonClick();
             _pauseManager.DisablePause();
             Object.Destroy(_pauseMenuView.gameObject);
         }
@@ -79,6 +82,12 @@ namespace Controllers.UI
             AddGameObject(objectView);
 
             return objectView.GetComponent<PauseMenuView>();
+        }
+
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
 
         protected override void OnDispose()

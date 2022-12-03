@@ -13,6 +13,8 @@ namespace Controllers
 
         private Transform _placeForUi;
         private ProfilePlayers _profilePlayer;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private LanguageMenuView _languageMenuView;
 
@@ -20,10 +22,12 @@ namespace Controllers
         private Button _russianButton;
         private Button _englishButton;
 
-        public LanguageMenuController(Transform placeForUi, ProfilePlayers profilePlayer)
+        public LanguageMenuController(Transform placeForUi, ProfilePlayers profilePlayer, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _profilePlayer = profilePlayer;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
             _languageMenuView = LoadView(placeForUi);
             AddButtons();
             SubscribeButton();
@@ -40,11 +44,19 @@ namespace Controllers
         {
             _backButton.onClick.AddListener(OnBackButtonClick);
             _englishButton.onClick.AddListener(() => ChangeLanguage(0));
-            _backButton.onClick.AddListener(() => ChangeLanguage(1));
+            _russianButton.onClick.AddListener(() => ChangeLanguage(1));
         }
 
-        private void ChangeLanguage(int index) { LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index]; }
-        private void OnBackButtonClick() => _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
+        private void ChangeLanguage(int index)
+        {
+            AudioButtonClick();
+            LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
+        }
+        private void OnBackButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.SettingsMenu;
+        }
 
         private void UnsubscribeButton()
         {
@@ -65,6 +77,11 @@ namespace Controllers
             AddGameObject(objectView);
 
             return objectView.GetComponent<LanguageMenuView>();
+        }
+        private void AudioButtonClick()
+        {
+            _audioSource.clip = _audioEffectsManager.ButtonClick;
+            _audioSource.Play();
         }
     }
 }

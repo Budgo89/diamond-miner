@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Profile;
+using System;
 using TMPro;
 using Tool;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Controllers.UI
         private int _diamondCount;
         private DiamondController _diamondController;
         private PauseManager _pauseManager;
+        private AudioEffectsManager _audioEffectsManager;
+        private AudioSource _audioSource;
 
         private GameUIView _gameUIView;
 
@@ -29,12 +32,15 @@ namespace Controllers.UI
         private PauseMenuController _pauseMenuController;
         
 
-        public GameUIController(Transform placeForUi, int diamondCount, DiamondController diamondController, PauseManager pauseManager)
+        public GameUIController(Transform placeForUi, int diamondCount, DiamondController diamondController, PauseManager pauseManager, 
+            AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
             _placeForUi = placeForUi;
             _diamondCount = diamondCount;
             _diamondController = diamondController;
             _pauseManager = pauseManager;
+            _audioEffectsManager = audioEffectsManager;
+            _audioSource = audioSource;
 
             _gameUIView = LoadView(placeForUi);
 
@@ -75,7 +81,7 @@ namespace Controllers.UI
         private void OnPauseMenuButtonClick()
         {
             _pauseManager.EnablePause();
-            _pauseMenuController = new PauseMenuController(_placeForUi, _pauseManager);
+            _pauseMenuController = new PauseMenuController(_placeForUi, _pauseManager, _audioEffectsManager, _audioSource);
         }
 
         private void UnsubscribeButton()
