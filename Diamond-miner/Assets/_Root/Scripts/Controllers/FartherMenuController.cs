@@ -64,7 +64,6 @@ namespace Controllers
             else if (_gameLevel.AvailableLevel > _gameLevel.CurrentLevel)
                 _gameLevel.CurrentLevel++;
             SaveManagement.SetLevels(_gameLevel);
-            //SaveManagement.SetRestart(1);
             SceneManager.LoadScene(1);
         }
 

@@ -1,40 +1,93 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Controllers;
 using MB;
+using PlayFab;
+using PlayFab.ClientModels;
 using Profile;
 using Tool;
 using UnityEngine;
 using UnityEngine.Audio;
+using static System.Int32;
 
 internal class EntryPoint : MonoBehaviour
 {
 
-    [Header("Scene Objects")]
-    [SerializeField] private Transform _placeForUi;
+    [Header("Scene Objects")] [SerializeField]
+    private Transform _placeForUi;
+
     [SerializeField] private AudioMixer _audioMixer;
 
-    [Header("Level Manager")]
-    [SerializeField] private LevelManager _levelManager;
-    
+    [Header("Level Manager")] [SerializeField]
+    private LevelManager _levelManager;
+
+    [Header("PlayFab")] [SerializeField] private string _titleId;
+    [SerializeField] private string _gameVersion = "dev";
+    [SerializeField] private string _authentificationKey = "AUTHENTIFICATION_KEY";
+
     private ProfilePlayers _profilePlayer;
-    
+
     private MainController _mainController;
 
     private GameLevel _gameLevel;
 
+    private bool _isServer = false;
+
+    private static string _myPlayFabId;
+
+    private readonly Dictionary<string, int> _progress = new Dictionary<string, int>();
+
     private void Start()
     {
         LoadVolumeAudio();
-    }
-    private void Awake()
-    {
         GetState();
         SaveManagement.SetGameState(0);
         SaveManagement.SetRestart(0);
         _gameLevel = SaveManagement.GetLevels();
         _mainController = new MainController(_profilePlayer, _placeForUi, _gameLevel, _levelManager, _audioMixer);
+
     }
+
+    private void Update()
+    {
+        if (!_isServer)
+        {
+            if (PlayFabClientAPI.IsClientLoggedIn())
+            {
+                _isServer = true;
+                PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest(), result =>
+                {
+                    _myPlayFabId = result.AccountInfo.PlayFabId;
+                    SaveManagement.myPlayFabId = _myPlayFabId;
+                }, error =>
+                {
+                    Debug.LogError($"Something went wrong: {error.Error}");
+                });
+
+                PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+                {
+                    PlayFabId = _myPlayFabId,
+                    Keys = null
+                }, result => {
+                    _gameLevel.AvailableLevel = Parse(result.Data[_gameLevel.AvailableLevelKey].Value);
+                    _gameLevel.CurrentLevel = Parse(result.Data[_gameLevel.CurrentLevelKey].Value);
+                }, (error) => {
+                    Debug.Log("Got error retrieving user data:");
+                    Debug.Log(error.GenerateErrorReport());
+                });
+                
+            }
+                
+        }
+    }
+    
+
+    private void Awake()
+    {
+        PlayFabManager();
+    }
+
 
     private void GetState()
     {
@@ -74,7 +127,7 @@ internal class EntryPoint : MonoBehaviour
     private void LoadVolumeAudio()
     {
         var volume = SaveManagement.GetVolume();
-       
+
         _audioMixer.SetFloat("volume", (float)(Math.Log10(volume) * 20));
     }
 
@@ -83,5 +136,37 @@ internal class EntryPoint : MonoBehaviour
         _mainController.Dispose();
         SaveManagement.SetLevels(_gameLevel);
     }
-    
+
+    private void PlayFabManager()
+    {
+        if (string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId))
+        {
+            PlayFabSettings.staticSettings.TitleId = _titleId;
+        }
+
+        var needCreation = !PlayerPrefs.HasKey(_authentificationKey);
+        var id = PlayerPrefs.GetString(_authentificationKey, Guid.NewGuid().ToString());
+        if (needCreation)
+        {
+            PlayerPrefs.SetString(_authentificationKey, id);
+        }
+        var request = new LoginWithCustomIDRequest
+        {
+            CustomId = id,
+            CreateAccount = true
+        };
+        PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginFailure);
+    }
+
+    private void OnLoginSuccess(LoginResult result)
+    {
+
+        Debug.Log("Congratulations, you made successful API call!");
+    }
+
+    private void OnLoginFailure(PlayFabError error)
+    {
+        var errorMessage = error.GenerateErrorReport();
+        Debug.LogError($"Something went wrong: {errorMessage}");
+    }
 }

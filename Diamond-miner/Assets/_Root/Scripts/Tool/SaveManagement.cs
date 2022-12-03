@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using PlayFab;
+using PlayFab.ClientModels;
 using Profile;
 using UnityEngine;
 
@@ -6,15 +9,49 @@ namespace Tool
 {
     public static class SaveManagement
     {
+
+        public static string myPlayFabId;
+
         /// <summary>
         /// Загрузить уровни
         /// </summary>
         /// <returns></returns>
         public static GameLevel GetLevels()
         {
+            var availableLevelLocal = PlayerPrefs.GetInt("AvailableLevel");
+            var currentLevelLocal = PlayerPrefs.GetInt("CurrentLevel");
+
+            var gameLevel = new GameLevel(availableLevelLocal, currentLevelLocal);
             try
             {
-                return new GameLevel(PlayerPrefs.GetInt("AvailableLevel"), PlayerPrefs.GetInt("CurrentLevel"));
+                if (PlayFabClientAPI.IsClientLoggedIn())
+                {
+                    PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+                    {
+                        PlayFabId = myPlayFabId,
+                        Keys = null
+                    }, result =>
+                    {
+                        var availableLevelPlayFab = int.Parse(result.Data[gameLevel.AvailableLevelKey].Value);
+                        var currentLevelLocalPlayFab = int.Parse(result.Data[gameLevel.CurrentLevelKey].Value);
+
+                        gameLevel.AvailableLevel = availableLevelLocal >= availableLevelPlayFab
+                            ? availableLevelLocal
+                            : availableLevelPlayFab;
+
+                        gameLevel.CurrentLevel = currentLevelLocal >= currentLevelLocalPlayFab
+                            ? currentLevelLocal
+                            : currentLevelLocalPlayFab;
+                        
+                    }, (error) => {
+                        Debug.Log("Got error retrieving user data:");
+                        Debug.Log(error.GenerateErrorReport());
+                    });
+
+                    return gameLevel;
+                }
+                else
+                    return gameLevel;
             }
             catch (Exception e)
             {
@@ -28,6 +65,23 @@ namespace Tool
         /// <param name="gameLevel"></param>
         public static void SetLevels(GameLevel gameLevel)
         {
+            if (PlayFabClientAPI.IsClientLoggedIn())
+            {
+                PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
+                    {
+                        Data = new Dictionary<string, string>() {
+                            {gameLevel.AvailableLevelKey, gameLevel.AvailableLevel.ToString()},
+                            {gameLevel.CurrentLevelKey, gameLevel.CurrentLevel.ToString()}
+                        }
+                    },
+                    result => Debug.Log("Successfully updated user data"),
+                    error => {
+                        Debug.Log("Got error setting user data Ancestor to Arthur");
+                        Debug.Log(error.GenerateErrorReport());
+                    });
+            }
+
+
             PlayerPrefs.SetInt("AvailableLevel", gameLevel.AvailableLevel);
             PlayerPrefs.SetInt("CurrentLevel", gameLevel.CurrentLevel);
         }
@@ -59,6 +113,7 @@ namespace Tool
         {
             PlayerPrefs.SetFloat("Volume", volume);
         }
+
         /// <summary>
         /// Перезагруска уровня
         /// </summary>
@@ -67,6 +122,7 @@ namespace Tool
         {
             PlayerPrefs.SetInt("Restart", x);
         }
+
         /// <summary>
         /// 0 новый запуск, 1 перезапуск
         /// </summary>
@@ -100,5 +156,6 @@ namespace Tool
             var x = PlayerPrefs.GetInt("Training");
             return x == 0 ? false : true;
         }
+
     }
 }

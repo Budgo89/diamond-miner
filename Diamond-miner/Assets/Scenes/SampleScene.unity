@@ -617,6 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -764,6 +765,9 @@ MonoBehaviour:
   _placeForUi: {fileID: 933159744}
   _audioMixer: {fileID: 24100000, guid: a204c8009a4209c4888e792956bf9573, type: 2}
   _levelManager: {fileID: 11400000, guid: f6cb71eced4d1ff4e96e4496365941e4, type: 2}
+  _titleId: B827A
+  _gameVersion: dev
+  _authentificationKey: AUTHENTIFICATION_KEY
 --- !u!4 &2057441682
 Transform:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ namespace Scripts
 
         private GameController _gameController;
 
-        public void Awake()
+        public void Start()
         {
             _gameLevel = SaveManagement.GetLevels();
             _pauseManager = new PauseManager();

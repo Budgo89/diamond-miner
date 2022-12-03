@@ -11,6 +11,9 @@
         /// </summary>
         public int CurrentLevel = 0;
 
+        public string AvailableLevelKey = "AvailableLevel";
+        public string CurrentLevelKey = "CurrentLevel";
+
         public GameLevel()
         {
         }
