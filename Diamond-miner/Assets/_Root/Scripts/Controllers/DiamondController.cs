@@ -39,7 +39,7 @@ namespace Controllers
                 _diamondEndView = LoadView(diamond.gameObject.transform);
                 diamond.gameObject.SetActive(false);
                 _navMeshSurface.BuildNavMesh();
-                DiamondRaised.Invoke();
+                DiamondRaised?.Invoke();
                 _diamondEndView.AudioSource.Play();
                 Object.Destroy(_diamondEndView.GameObject, 1);
             }

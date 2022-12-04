@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 namespace MB
@@ -6,6 +7,7 @@ namespace MB
     public class SwipeDetection : MonoBehaviour
     {
         [SerializeField] private float _speedPlayer = 0.25f;
+        [SerializeField] private PhotonView _photonViewView = null;
         public event OnSwipeInput SwipeEvevt;
         public delegate void OnSwipeInput(Vector2 direction);
 
@@ -25,6 +27,13 @@ namespace MB
 
         void Update()
         {
+            if (_photonViewView != null)
+            {
+                if (!_photonViewView.IsMine)
+                {
+                    return;
+                }
+            }
             var deltaTime = Time.deltaTime;
             _time += Time.deltaTime;
             if (!isMobile)

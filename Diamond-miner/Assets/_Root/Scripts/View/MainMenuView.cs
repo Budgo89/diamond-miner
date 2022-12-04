@@ -9,11 +9,13 @@ namespace View
         [SerializeField] private Button _levelButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _exitButton;
+        [SerializeField] private Button _onlineButton;
 
         public Button StartGameButton => _startGameButton;
         public Button LevelButton => _levelButton;
         public Button SettingsButton => _settingsButton;
         public Button ExitButton => _exitButton;
+        public Button OnlineButton => _onlineButton;
 
     }
 }

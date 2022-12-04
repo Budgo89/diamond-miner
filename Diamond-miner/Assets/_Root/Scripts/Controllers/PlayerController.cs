@@ -1,4 +1,5 @@
 ﻿using MB;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
@@ -20,14 +21,16 @@ namespace Controllers
 
         private TilemapController _tilemapController;
         private StoneController _stoneController;
+        private PhotonView _photonViewView;
 
-        public PlayerController(Player player, Tilemap tileMap, DiamondController diamondController, NavMeshSurface2d navMeshSurface, SwipeDetection swipeDetection)
+        public PlayerController(Player player, Tilemap tileMap, DiamondController diamondController, NavMeshSurface2d navMeshSurface, SwipeDetection swipeDetection, PhotonView photonViewView = null)
         {
             _player = player;
             _tileMap = tileMap;
             _diamondController = diamondController;
             _navMeshSurface = navMeshSurface;
             _swipeDetection = swipeDetection;
+            _photonViewView = photonViewView;
 
             _swipeDetection.SwipeEvevt += OnSwipe;
 
@@ -49,6 +52,8 @@ namespace Controllers
 
         public void Update()
         {
+
+
             if (Input.GetKeyDown(KeyCode.A))
             {
                 Move(-1,0);
@@ -72,6 +77,13 @@ namespace Controllers
 
         private void Move(int x, int y, float xAxisInput = 0)
         {
+            if (_photonViewView != null)
+            {
+                if (!_photonViewView.IsMine)
+                {
+                    return;
+                }
+            }
             if (x != 0)
             {
                 var flaEdgeMap = _tilemapController.IsEdgeMap(x, Vector2.right);

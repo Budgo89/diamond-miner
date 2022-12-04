@@ -28,7 +28,8 @@ namespace Controllers
         private LevelMenuController _levelMenuController;
         private FartherMenuController _fartherMenuController;
         private GameOverMenuController _gameOverMenuController;
-        
+        private RoomController _roomController;
+
 
         public MainController(ProfilePlayers profilePlayer, Transform placeForUi, GameLevel gameLevel, LevelManager levelManager, AudioMixer audioMixer, 
             AudioEffectsManager audioEffectsManager, AudioSource audioSource)
@@ -82,6 +83,9 @@ namespace Controllers
                 case GameState.ExitMenu:
                     _exitController = new ExitController(_placeForUi, _profilePlayer, _audioEffectsManager, _audioSource);
                     break;
+                case GameState.Room:
+                    _roomController = new RoomController(_placeForUi, _profilePlayer, _audioEffectsManager, _audioSource);
+                    break;
             }
         }
 
@@ -95,7 +99,9 @@ namespace Controllers
             _volumeMenuController?.Dispose();
             _fartherMenuController?.Dispose();
             _mainMenuController?.Dispose();
-            
+            _roomController?.Dispose();
+
+
         }
     }
 }

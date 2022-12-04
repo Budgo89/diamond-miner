@@ -47,5 +47,17 @@ namespace Controllers
             Vector3Int gridPos = _tileMap.WorldToCell(world);
             _tileMap.SetTile(new Vector3Int(gridPos.x, gridPos.y, 0), null);
         }
+        public void RemoveSoilPlayer2(int sign, Vector2 vector2, Vector3 player)
+        {
+            var ray = Physics2D.Raycast(player, sign * vector2, 1);
+            if (ray.rigidbody == null)
+                return;
+            var priming = ray.rigidbody.gameObject.GetComponent<Priming>();
+            if (priming == null)
+                return;
+            Vector3 world = new Vector3(ray.point.x, ray.point.y, -1);
+            Vector3Int gridPos = _tileMap.WorldToCell(world);
+            _tileMap.SetTile(new Vector3Int(gridPos.x, gridPos.y, 0), null);
+        }
     }
 }

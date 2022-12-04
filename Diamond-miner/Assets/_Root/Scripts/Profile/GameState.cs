@@ -10,6 +10,8 @@
         LanguageMenu,
         VolumeMenu,
         FartherMenu,
-        GameOverMenu
+        GameOverMenu,
+        Room,
+        OnlineGame
     }
 }

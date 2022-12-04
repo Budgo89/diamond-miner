@@ -75,6 +75,10 @@ MonoBehaviour:
     m_Key: EnemyText
     m_Metadata:
       m_Items: []
+  - m_Id: 55672116210728960
+    m_Key: Online
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

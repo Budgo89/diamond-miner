@@ -21,6 +21,7 @@ namespace Controllers.UI
         private Button _levelButton;
         private Button _settingsButton;
         private Button _exitButton;
+        private Button _onlineButton;
 
         public MainMenuController(Transform placeForUi, ProfilePlayers profilePlayer, AudioEffectsManager audioEffectsManager, AudioSource audioSource)
         {
@@ -49,6 +50,7 @@ namespace Controllers.UI
             _levelButton = _mainMenuView.LevelButton;
             _settingsButton = _mainMenuView.SettingsButton;
             _exitButton = _mainMenuView.ExitButton;
+            _onlineButton = _mainMenuView.OnlineButton;
         }
 
         private void SubscribeButton()
@@ -57,6 +59,13 @@ namespace Controllers.UI
             _levelButton.onClick.AddListener(OnLevelButtonClick);
             _settingsButton.onClick.AddListener(OnSettingsButtonClick);
             _exitButton.onClick.AddListener(OnExitButtonClick);
+            _onlineButton.onClick.AddListener(OnOnlineButtonClick);
+        }
+
+        private void OnOnlineButtonClick()
+        {
+            AudioButtonClick();
+            _profilePlayer.CurrentState.Value = GameState.Room;
         }
 
         private void OnStartGameButtonClick()
@@ -89,6 +98,7 @@ namespace Controllers.UI
             _levelButton.onClick.RemoveAllListeners();
             _settingsButton.onClick.RemoveAllListeners();
             _exitButton.onClick.RemoveAllListeners();
+            _onlineButton.onClick.RemoveAllListeners();
         }
 
         private void AudioButtonClick()

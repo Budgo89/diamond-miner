@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Controllers.UI;
 using MB;
+using Photon.Pun;
 using Profile;
 using Tool;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Controllers
     internal class GameController : BaseController
     {
         private readonly ResourcePath _resourcePath = new ResourcePath("Prefabs/Player");
+        private readonly ResourcePath _resourcePathOnline = new ResourcePath("PlayerOnline");
 
         private Transform _placeForUi;
         private Player _player;
@@ -29,6 +31,7 @@ namespace Controllers
         private GameUIController _gameUiController;
         private GameOverController _gameOverController;
         private TrainingMenuController _trainingMenuController;
+        private PhotonView _photonViewView;
 
         private List<GameObject> _emenys;
 
@@ -38,6 +41,30 @@ namespace Controllers
         private LevelView _levelView;
 
         private NavMeshSurface2d _navMeshSurface;
+
+
+        public GameController(Transform placeForUi, TileMapScanner tileMapScanner, GameLevel gameLevel, PauseManager pauseManager,
+            AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection, AudioSource audioSource, LevelView levelView, Player player, PhotonView photonViewView)
+        {
+            _placeForUi = placeForUi;
+
+            _tileMapScanner = tileMapScanner;
+            _levelView = levelView;
+            _gameLevel = gameLevel;
+            _pauseManager = pauseManager;
+            _audioEffectsManager = audioEffectsManager;
+            _swipeDetection = swipeDetection;
+            _audioSource = audioSource;
+            _player = player;
+            _photonViewView = photonViewView;
+
+            _pauseManager.DisablePause();
+            
+
+            StartGameOnline();
+        }
+
+
 
         public GameController(Transform placeForUi, TileMapScanner tileMapScanner, LevelManager levelManager, GameLevel gameLevel, PauseManager pauseManager, 
             AudioEffectsManager audioEffectsManager, SwipeDetection swipeDetection, AudioSource audioSource)
@@ -76,6 +103,15 @@ namespace Controllers
 
         }
 
+        private void StartGameOnline()
+        {
+            //_player = LoadPlayer();
+            
+            _navMeshSurface = _levelView.NavMeshSurface;
+            _navMeshSurface.BuildNavMesh();
+            CreateControllers();
+        }
+
         private void StartGame()
         {
             _player = LoadPlayer();
@@ -95,7 +131,7 @@ namespace Controllers
         private void CreateControllers()
         {
             _diamondController = new DiamondController(_levelView.Diamonds, _player, _navMeshSurface);
-            _playerController = new PlayerController(_player, _tileMap, _diamondController, _navMeshSurface, _swipeDetection);
+            _playerController = new PlayerController(_player, _tileMap, _diamondController, _navMeshSurface, _swipeDetection, _photonViewView);
             _gameUiController = new GameUIController(_placeForUi, _levelView.DiamondCount, _diamondController, _pauseManager, _audioEffectsManager, _audioSource);
             _gameOverController = new GameOverController(_player, _levelView.DiamondCount, _diamondController, _pauseManager, _levelView.Enemys, _audioEffectsManager);
         }
