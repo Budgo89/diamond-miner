@@ -39,6 +39,10 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - "Diamond\u0421heck1"
+  - Pause
+  - OnMainMenuButtonClick
+  - OnMainMenuButtonClickPunRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
-  DevRegionSetOnce: 0
+  DevRegionSetOnce: 1

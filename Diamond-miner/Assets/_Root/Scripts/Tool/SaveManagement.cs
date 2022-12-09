@@ -34,7 +34,7 @@ namespace Tool
                     {
                         var availableLevelPlayFab = int.Parse(result.Data[gameLevel.AvailableLevelKey].Value);
                         var currentLevelLocalPlayFab = int.Parse(result.Data[gameLevel.CurrentLevelKey].Value);
-
+                        
                         gameLevel.AvailableLevel = availableLevelLocal >= availableLevelPlayFab
                             ? availableLevelLocal
                             : availableLevelPlayFab;
@@ -157,5 +157,58 @@ namespace Tool
             return x == 0 ? false : true;
         }
 
+        /// <summary>
+        /// Получить Количество побед в ПВП
+        /// </summary>
+        /// <returns></returns>
+        public static int GetVictoryPvp()
+        {
+            int victoryPvp = 0;
+            try
+            {
+                if (PlayFabClientAPI.IsClientLoggedIn())
+                {
+                    PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+                    {
+                        PlayFabId = myPlayFabId,
+                        Keys = null
+                    }, result =>
+                    {
+                        victoryPvp = int.Parse(result.Data["VictoryPvp"].Value);
+
+                    }, (error) => {
+                        Debug.Log("Got error retrieving user data:");
+                        Debug.Log(error.GenerateErrorReport());
+                    });
+
+                    return victoryPvp;
+                }
+                else
+                    return victoryPvp;
+            }
+            catch (Exception e)
+            {
+                return victoryPvp;
+            }
+        }
+
+
+        public static void SetVictoryPvp(int victoryPvp)
+        {
+            if (PlayFabClientAPI.IsClientLoggedIn())
+            {
+                PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
+                    {
+                        Data = new Dictionary<string, string>() {
+                            {"VictoryPvp", victoryPvp.ToString()}
+                        }
+                    },
+                    result => Debug.Log("Successfully updated user data"),
+                    error => {
+                        Debug.Log("Got error setting user data Ancestor to Arthur");
+                        Debug.Log(error.GenerateErrorReport());
+                    });
+            }
+        }
     }
 }

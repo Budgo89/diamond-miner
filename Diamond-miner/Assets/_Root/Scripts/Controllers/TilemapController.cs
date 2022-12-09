@@ -49,7 +49,7 @@ namespace Controllers
         }
         public void RemoveSoilPlayer2(int sign, Vector2 vector2, Vector3 player)
         {
-            var ray = Physics2D.Raycast(player, sign * vector2, 1);
+            var ray = Physics2D.Raycast(player, sign * vector2, 0);
             if (ray.rigidbody == null)
                 return;
             var priming = ray.rigidbody.gameObject.GetComponent<Priming>();

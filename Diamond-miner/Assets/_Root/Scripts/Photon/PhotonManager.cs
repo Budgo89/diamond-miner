@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
-using UnityEngine;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
@@ -11,9 +8,5 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
 
     }
-
-    void Update()
-    {
-        
-    }
+    
 }

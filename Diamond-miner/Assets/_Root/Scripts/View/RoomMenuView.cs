@@ -38,24 +38,23 @@ public class RoomMenuView : MonoBehaviourPunCallbacks, IPunObservable
     public override void OnJoinedRoom()
     {
         SwitchingButtons();
-        _player1Text.text = PhotonNetwork.PlayerList[0].NickName;
+        _player1Text.text = "Игрок 1";
         if (PhotonNetwork.PlayerList.Length == 2)
         {
-            _player2Text.text = PhotonNetwork.PlayerList[1].NickName;
+            _player2Text.text = "Игрок 2";
             _lockImage.gameObject.SetActive(false);
-            _startButton.gameObject.SetActive(true);
+            _startButton.gameObject.SetActive(false);
             StartCoroutine(TestCoroutine());
         }
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        _player1Text.text = PhotonNetwork.PlayerList[0].NickName;
-        _player2Text.text = newPlayer.NickName;
+        _player1Text.text = "Игрок 1";
+        _player2Text.text = "Игрок 2";
         if (PhotonNetwork.PlayerList.Length == 2)
         {
             _lockImage.gameObject.SetActive(false);
-            _startButton.gameObject.SetActive(true);
             StartCoroutine(TestCoroutine());
         }
         //_lockImage.gameObject.SetActive(false);
@@ -66,7 +65,6 @@ public class RoomMenuView : MonoBehaviourPunCallbacks, IPunObservable
     {
         _player2Text.text = "Ожидаем";
         _lockImage.gameObject.SetActive(true);
-        _startButton.gameObject.SetActive(false);
     }
 
     public void JoinRoom()

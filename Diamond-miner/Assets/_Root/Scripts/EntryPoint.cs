@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Controllers;
-using MB;
 using PlayFab;
 using PlayFab.ClientModels;
 using Profile;
 using Tool;
 using UnityEngine;
 using UnityEngine.Audio;
-using static System.Int32;
 
 internal class EntryPoint : MonoBehaviour
 {
@@ -75,8 +71,8 @@ internal class EntryPoint : MonoBehaviour
                     PlayFabId = _myPlayFabId,
                     Keys = null
                 }, result => {
-                    _gameLevel.AvailableLevel = Parse(result.Data[_gameLevel.AvailableLevelKey].Value);
-                    _gameLevel.CurrentLevel = Parse(result.Data[_gameLevel.CurrentLevelKey].Value);
+                    _gameLevel.AvailableLevel = int.Parse(result.Data[_gameLevel.AvailableLevelKey].Value);
+                    _gameLevel.CurrentLevel = int.Parse(result.Data[_gameLevel.CurrentLevelKey].Value);
                 }, (error) => {
                     Debug.Log("Got error retrieving user data:");
                     Debug.Log(error.GenerateErrorReport());
