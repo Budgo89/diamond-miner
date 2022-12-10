@@ -1730,7 +1730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedPlayer: 0.25
-  _photonViewView: {fileID: -4954655369152716612, guid: fe118cc708dfede4a821909ed2a931a0, type: 3}
+  _photonViewView: {fileID: 0}
 --- !u!114 &2099511860
 MonoBehaviour:
   m_ObjectHideFlags: 0

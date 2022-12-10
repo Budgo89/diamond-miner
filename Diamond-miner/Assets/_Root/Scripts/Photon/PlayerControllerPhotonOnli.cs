@@ -86,7 +86,6 @@ public class PlayerControllerPhotonOnli : MonoBehaviourPunCallbacks, IPunObserva
     
     private void Diamond—heck()
     {
-        //_countDiamondPlayer++;
         _photonViewView.RPC("Diamond—heck1", RpcTarget.Others);
     }
     [PunRPC]
@@ -103,14 +102,33 @@ public class PlayerControllerPhotonOnli : MonoBehaviourPunCallbacks, IPunObserva
 
     private void OnSwipe(Vector2 direction)
     {
-        if (direction == Vector2.up)
-            Move(0, 1);
-        if (direction == Vector2.down)
-            Move(0, -1);
-        if (direction == Vector2.left)
-            Move(-1, 0, -1);
-        if (direction == Vector2.right)
-            Move(1, 0, 1);
+        if (_photonViewView.IsMine)
+        {
+            if (direction == Vector2.up)
+            {
+                Move(0, 1);
+                _position = new Vector2(0, 1);
+            }
+            if (direction == Vector2.down)
+            {
+                Move(0, -1);
+                _position = new Vector2(0, -1);
+            }
+            if (direction == Vector2.left)
+            {
+                Move(-1, 0, -1);
+                _position = new Vector2(-1, 0);
+            }
+            if (direction == Vector2.right)
+            {
+                Move(1, 0, 1);
+                _position = new Vector2(1, 0);
+            }
+        }
+        else
+        {
+            Move1((int)_position.x, (int)_position.y);
+        }
     }
 
     public void Update()
